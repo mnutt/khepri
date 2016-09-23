@@ -7,6 +7,8 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('processes');
+  this.route('process', { path: '/processes/:name' });
 });
 
 export default Router;

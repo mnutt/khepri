@@ -1,0 +1,19 @@
+<nav class="nav-group">
+  <h5 class="nav-group-title">Processes</h5>
+
+  {{#each processes.list as |process|}}
+    {{#link-to 'process' process.name class="nav-group-item"}}
+      <span class="icon icon-db-shape {{process.state}}"></span>
+      <span class="name">{{process.name}}</span>
+
+      <span class="actions">
+        <span class="icon icon-cw"></span>
+        {{#if process.alive}}
+          <span class="icon icon-stop"></span>
+        {{else}}
+          <span class="icon icon-play"></span>
+        {{/if}}
+      </span>
+    {{/link-to}}
+  {{/each}}
+</nav>

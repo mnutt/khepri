@@ -2,6 +2,7 @@
   "name": "accord",
   "dependencies": {
     "ember": "~2.8.0",
-    "ember-cli-shims": "0.1.1"
+    "ember-cli-shims": "0.1.1",
+    "photon": "^0.1.2-alpha"
   }
 }
