@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 const { get, set, on } = Ember;
 
-const exec = requireNode('child_process').exec;
 const spawn = requireNode('child_process').spawn;
 const ansiUp = requireNode('ansi_up');
 
