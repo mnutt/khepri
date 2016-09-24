@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Process from 'accord/models/process';
+import Process from 'khepri/models/process';
 
 const { get, set, run, RSVP } = Ember;
 

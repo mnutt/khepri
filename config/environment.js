@@ -2,7 +2,7 @@
 
 module.exports = function(environment) {
   var ENV = {
-    modulePrefix: 'accord',
+    modulePrefix: 'khepri',
     environment: environment,
     rootURL: null,
     locationType: 'hash',

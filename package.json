@@ -1,7 +1,7 @@
 {
-  "name": "accord",
+  "name": "khepri",
   "version": "0.0.0",
-  "description": "Small description for accord goes here",
+  "description": "Process manager gui",
   "private": true,
   "directories": {
     "doc": "doc",
