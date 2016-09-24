@@ -13,7 +13,7 @@
 }
 
 .process-list .stopped {
-  color: hsl(220, 0%, 17%);
+  color: hsl(220, 0%, 27%);
 }
 
 .process-list .alive {
@@ -22,7 +22,7 @@
 
 .nav-group-item {
   display: flex;
-  padding: 3px 5px;
+  padding: 3px 0 3px 8px;
 }
 
 .nav-group-item name {
@@ -33,6 +33,14 @@
 
 .nav-group-item .actions {
   min-width: 60px;
+}
+
+.nav-group-item .actions span {
+  cursor: pointer;
+}
+
+.nav-group-item .actions span:active {
+  color: #FFF !important;
 }
 
 .log-tail {
@@ -49,6 +57,13 @@
   white-space: pre-wrap;
   font-family: "Consolas", "Menlo", "Monaco", monospace;
   padding: 10px;
+}
+
+.log-tail hr {
+  border: 0;
+  border-top: 4px solid rgb(90,81,94);
+  margin-left: -10px;
+  margin-right: -10px;
 }
 
 .ansi-black-fg {
@@ -185,6 +200,8 @@ header {
   left: 0;
   right: 0;
   height: 50px;
+  display: flex;
+  flex-direction: row;
 }
 
 header h1 {
@@ -192,6 +209,13 @@ header h1 {
   overflow: hidden;
   -webkit-app-region: drag;
   font-family: "Source Sans Pro", monospace;
+  flex: 1;
+}
+
+header .actions span {
+  font-size: 2em;
+  padding: 0 15px;
+  line-height: 1.8em;
 }
 
 .logo {
@@ -214,4 +238,5 @@ header h1 {
   display: flex;
   flex-direction: row;
   align-items: center;
+  -webkit-app-region: drag;
 }

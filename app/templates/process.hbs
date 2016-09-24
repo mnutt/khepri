@@ -2,7 +2,8 @@
   <h1>{{model.name}}</h1>
 
   <div class="actions">
+    <span {{action 'clear'}} class="icon icon-megaphone"></span>
   </div>
 </header>
 
-{{log-tail path=model.log}}
+{{log-tail path=model.log data=data}}

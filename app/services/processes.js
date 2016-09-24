@@ -39,28 +39,63 @@ export default Ember.Service.extend({
     });
   },
 
+  stop(name, signal) {
+    return this.execTask({task: 'stop', name, signal}).then((data) => {
+      return this.createOrUpdate(data);
+    });
+  },
+
+  start(name) {
+    return this.execTask({task: 'start', name}).then((data) => {
+      return this.createOrUpdate(data);
+    });
+  },
+
+  restart(name) {
+    return this.execTask({task: 'stop', name}).then(() => {
+      return this.execTask({task: 'start', name});
+    }).then((data) => {
+      return this.createOrUpdate(data);
+    });
+  },
+
+  execTask(task) {
+    return new RSVP.Promise((resolve, reject) => {
+      this.client.request('task', task, (err, data) => {
+        if (err) { reject(err); }
+        if (!data) { resolve(null); }
+
+        resolve(data);
+      });
+    });
+  },
+
   update() {
     return new RSVP.Promise((resolve, reject) => {
       this.client.request('get-all', (err, data) => {
         if(err) { return reject(err); }
 
-        let newItems = data.map((item) => {
-          let newItem;
-          let key = item.name;
-          let prior = get(this, `itemMap.${key}`);
-          if(prior) {
-            prior.setProperties(item);
-            newItem = prior;
-          } else {
-            newItem = Process.create(data);
-            set(this, `itemMap.${key}`, newItem);
-          }
-          return newItem;
+        let newRecords = data.map((record) => {
+          return this.createOrUpdate(record);
         });
 
-        set(this, 'list', newItems);
-        resolve(newItems);
+        set(this, 'list', newRecords);
+        resolve(newRecords);
       });
     });
+  },
+
+  createOrUpdate(attrs) {
+    let newProcess;
+    let key = attrs.name;
+    let prior = get(this, `itemMap.${key}`);
+    if(prior) {
+      prior.setProperties(attrs);
+      newProcess = prior;
+    } else {
+      newProcess = Process.create(attrs);
+      set(this, `itemMap.${key}`, newProcess);
+    }
+    return newProcess;
   }
 });

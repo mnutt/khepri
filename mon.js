@@ -14,7 +14,7 @@ var daemonize = argv.d || argv.daemonize;
 var logfile   = argv.l || argv.log;
 var sleep     = parseInt(argv.s || argv.sleep) || 1;
 var attempts  = parseInt(argv.a || argv.attempts) || 3;
-
+var marker    = argv.k || argv.marker;
 
 if(daemonize) {
   console.log('daemonizing', process.pid);
@@ -43,6 +43,9 @@ function startProcess() {
   });
 
   let out = logfile ? fs.createWriteStream(logfile, {flags: "a"}) : process.stdout;
+
+  out.write("=== mon starting ===\n");
+
   term.pipe(out);
 
   if(pidfile) {

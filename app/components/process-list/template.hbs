@@ -7,11 +7,11 @@
       <span class="name">{{process.name}}</span>
 
       <span class="actions">
-        <span class="icon icon-cw"></span>
+        <span {{action 'restart' process.name}} class="icon icon-cw"></span>
         {{#if process.alive}}
-          <span class="icon icon-stop"></span>
+          <span {{action 'stop' process.name}} class="icon icon-stop"></span>
         {{else}}
-          <span class="icon icon-play"></span>
+          <span {{action 'start' process.name}} class="icon icon-play"></span>
         {{/if}}
       </span>
     {{/link-to}}
