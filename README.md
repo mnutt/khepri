@@ -1,7 +1,6 @@
-# Accord
+# Khepri
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+Khepri is a process manager similar to foreman, but built as an electron-based gui app.
 
 ## Prerequisites
 
@@ -9,25 +8,19 @@ You will need the following things properly installed on your computer.
 
 * [Git](http://git-scm.com/)
 * [Node.js](http://nodejs.org/) (with NPM)
-* [Bower](http://bower.io/)
-* [Ember CLI](http://ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd accord`
+* `git clone git://github.com/mnutt/khepri.git`
+* `cd khepri`
 * `npm install`
 * `bower install`
+* `npm start`
 
 ## Running / Development
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
+* `ember electron`
+* On Mac: edit ~/Library/Application Support/khepri/data/config.json to add your apps.
 
 ### Running Tests
 
@@ -41,13 +34,8 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ### Deploying
 
-Specify what it takes to deploy your app.
+No instructions yet.
 
-## Further Reading / Useful Links
+## License
 
-* [ember.js](http://emberjs.com/)
-* [ember-cli](http://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
-
+See LICENSE.md
