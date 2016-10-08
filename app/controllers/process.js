@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
 
   actions: {
     clear() {
-      set(this, 'data', '');
+      set(this, 'model.data', '');
     }
   }
 });

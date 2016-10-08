@@ -18,7 +18,7 @@ export default Ember.Service.extend({
   find(name) {
     let item = get(this, `itemMap.${name}`);
     if(item) {
-      return item;
+      return Ember.RSVP.cast(item);
     } else {
       return this.update().then(() => {
         return get(this, `itemMap.${name}`);
@@ -32,7 +32,7 @@ export default Ember.Service.extend({
         this.updateLoop();
       }, 1000);
     }).catch((err) => {
-      console.log(err);
+      console.log("Service update error", err);
       run.later(() => {
         this.updateLoop();
       }, 5000);
