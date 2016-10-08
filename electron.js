@@ -58,19 +58,13 @@ app.on('ready', function onReady() {
     titleBarStyle: 'hidden'
   });
   mainWindow.webContents.openDevTools();
+
   server.configure(mainWindow.webContents);
 
   delete mainWindow.module;
 
-  // If you want to open up dev tools programmatically, call
-  // mainWindow.openDevTools();
-
   // By default, we'll open the Ember App by directly going to the
   // file system.
-  //
-  // Please ensure that you have set the locationType option in the
-  // config/environment.js file to 'hash'. For more information,
-  // please consult the ember-electron readme.
   mainWindow.loadURL(emberAppLocation);
 
   // If a loading operation goes wrong, we'll send Electron back to
@@ -96,14 +90,6 @@ app.on('ready', function onReady() {
     mainWindow = null;
   });
 
-  // start all once
-  start([], function started (err) {
-    if (err) {
-      return console.log('error starting processes: ' + err.message);
-    }
-    console.log('started all processes');
-  });
-
   // Handle an unhandled error in the main thread
   //
   // Note that 'uncaughtException' is a crude mechanism for exception handling intended to
@@ -124,38 +110,6 @@ app.on('ready', function onReady() {
     console.log('This is a serious issue that needs to be handled and/or debugged.');
     console.log(`Exception: ${err}`);
   });
-});
-
-server.on('terminate', function terminate (ev) {
-  canQuit = true;
-  app.quit();
-});
-
-server.on('get-all', function getAll (req, next) {
-  next(null, getProcessesStatus());
-});
-
-server.on('get-one', function getOne (req, next) {
-  next(null, getProcessStatus(req.body.name));
-});
-
-server.on('task', function task (req, next) {
-  if (req.body.task === 'startAll') { start([], updateAll); };
-  if (req.body.task === 'stopAll') { stop([], req.body.signal, updateAll); };
-  if (req.body.task === 'restartAll') { restart([], updateAll); };
-  if (req.body.task === 'start') { start([req.body.name], updateSingle); };
-  if (req.body.task === 'stop') { stop([req.body.name], req.body.signal, updateSingle); };
-  if (req.body.task === 'restart') { restart([req.body.name], updateSingle); };
-
-  function updateAll (err) {
-    if (err) { throw err; };
-    next(null, getProcessesStatus());
-  }
-
-  function updateSingle (err) {
-    if (err) { throw err; }
-    next(null, getProcessStatus(req.body.name));
-  }
 });
 
 function loadConfig () {
@@ -202,16 +156,7 @@ function loadConfig () {
 }
 
 server.on('terminate', function terminate (ev) {
-  canQuit = true;
   app.quit();
-});
-
-server.on('open-dir', function openDir (ev) {
-  shell.showItemInFolder(path.join(conf.exec.cwd, 'config.json'));
-});
-
-server.on('open-logs-dir', function openLogsDir (req) {
-  shell.showItemInFolder(path.join(conf.logs, req.body.name + '.log'));
 });
 
 server.on('get-all', function getAll (req, next) {
@@ -223,15 +168,15 @@ server.on('get-one', function getOne (req, next) {
 });
 
 server.on('task', function task (req, next) {
-  if (req.body.task === 'startAll') start([], updateAll);
-  if (req.body.task === 'stopAll') stop([], req.body.signal, updateAll);
-  if (req.body.task === 'restartAll') restart([], updateAll);
-  if (req.body.task === 'start') start([req.body.name], updateSingle);
-  if (req.body.task === 'stop') stop([req.body.name], req.body.signal, updateSingle);
-  if (req.body.task === 'restart') restart([req.body.name], updateSingle);
+  if (req.body.task === 'startAll') { start([], updateAll); };
+  if (req.body.task === 'stopAll') { stop([], req.body.signal, updateAll); };
+  if (req.body.task === 'restartAll') { restart([], updateAll); };
+  if (req.body.task === 'start') { start([req.body.name], updateSingle); };
+  if (req.body.task === 'stop') { stop([req.body.name], req.body.signal, updateSingle); };
+  if (req.body.task === 'restart') { restart([req.body.name], updateSingle); };
 
   function updateAll (err) {
-    if (err) { throw err; }
+    if (err) { throw err; };
     next(null, getProcessesStatus());
   }
 
@@ -239,6 +184,14 @@ server.on('task', function task (req, next) {
     if (err) { throw err; }
     next(null, getProcessStatus(req.body.name));
   }
+});
+
+server.on('open-dir', function openDir (ev) {
+  shell.showItemInFolder(path.join(conf.exec.cwd, 'config.json'));
+});
+
+server.on('open-logs-dir', function openLogsDir (req) {
+  shell.showItemInFolder(path.join(conf.logs, req.body.name + '.log'));
 });
 
 function getProcessStatus (procName) {
