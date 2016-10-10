@@ -64,7 +64,10 @@ app.on('ready', function onReady() {
     height: 700,
     titleBarStyle: 'hidden'
   });
-  mainWindow.webContents.openDevTools();
+
+  if(process.env.DEV_TOOLS) {
+    mainWindow.webContents.openDevTools();
+  }
 
   server.configure(mainWindow.webContents);
 
