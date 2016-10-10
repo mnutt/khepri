@@ -2,6 +2,8 @@
 
 Khepri is a process manager similar to foreman, but built as an electron-based gui app.
 
+![Screenshot](/public/assets/images/screenshot.png?raw=true)
+
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
