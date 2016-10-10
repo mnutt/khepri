@@ -38,6 +38,10 @@ You will need the following things properly installed on your computer.
 
 No instructions yet.
 
+## Acknowledgements
+
+Khepri was inspired by [Monu](https://github.com/maxogden/monu) and uses portions of its RPC and process group code.
+
 ## License
 
 See LICENSE.md
