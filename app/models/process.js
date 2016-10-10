@@ -1,9 +1,12 @@
 import Ember from 'ember';
 
-const { get, set, computed, run } = Ember;
+const { get, set, computed, run, inject } = Ember;
 
 const spawn = requireNode('child_process').spawn;
 const ansiUp = requireNode('ansi_up');
+const Client = requireNode('electron-rpc/client');
+
+const client = new Client();
 
 function endOfFile(path, lineCount, cb) {
   let tail = spawn('tail', [`-${lineCount}f`, path]);
@@ -19,21 +22,25 @@ export default Ember.Object.extend({
   alive: computed.equal('state', 'alive'),
   tail: null,
 
-  data: '',
-  newData: '', // buffer of new log data, used to debounce formatting calls
+  data: [],
+  newData: [], // buffer of new log data, used to debounce formatting calls
 
   fillHistorical() {
     this.tearDownTail();
 
-    set(this, 'data', '');
+    set(this, 'data', []);
 
     let path = get(this, 'log');
     let history = get(this, 'history');
+    let newData = get(this, 'newData');
 
     this.tail = endOfFile(path, history, (err, stdout) => {
-      set(this, 'newData', get(this, 'newData') + stdout);
+      newData.push(stdout);
       run.throttle(this, this.formatNewData, 100, false);
     });
+
+    // main process records pid for cleanup in event of hard exit
+    client.request('tail-pid', this.tail.pid);
   },
 
   tearDownTail() {
@@ -44,9 +51,9 @@ export default Ember.Object.extend({
   },
 
   formatNewData() {
-    let newData = this.format(get(this, 'newData'));
-    set(this, 'data', get(this, 'data') + newData);
-    set(this, 'newData', '');
+    let newData = this.format(get(this, 'newData').join(''));
+    get(this, 'data').pushObject(newData);
+    get(this, 'newData').clear();
   },
 
   format(lines) {

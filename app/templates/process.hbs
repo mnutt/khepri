@@ -2,8 +2,14 @@
   <h1>{{model.name}}</h1>
 
   <div class="actions">
-    <span {{action 'clear'}} class="icon icon-megaphone"></span>
+    <div class="action" {{action 'clear'}}>
+      <span class="icon icon-erase"></span> Clear
+    </div>
+
+    <div class="action" {{action 'toggleFollow'}}>
+      <span class="icon icon-cd {{if follow 'active'}}"></span> Follow
+    </div>
   </div>
 </header>
 
-{{log-tail data=model.data}}
+{{log-tail follow=follow data=model.data}}

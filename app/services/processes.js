@@ -59,9 +59,13 @@ export default Ember.Service.extend({
     });
   },
 
+  request(command, value, callback) {
+    return this.client.request(command, value, callback);
+  },
+
   execTask(task) {
     return new RSVP.Promise((resolve, reject) => {
-      this.client.request('task', task, (err, data) => {
+      this.request('task', task, (err, data) => {
         if (err) { reject(err); }
         if (!data) { resolve(null); }
 
@@ -72,7 +76,7 @@ export default Ember.Service.extend({
 
   update() {
     return new RSVP.Promise((resolve, reject) => {
-      this.client.request('get-all', (err, data) => {
+      this.request('get-all', (err, data) => {
         if(err) { return reject(err); }
 
         let newRecords = data.map((record) => {

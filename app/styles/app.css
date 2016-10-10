@@ -212,10 +212,16 @@ header h1 {
   flex: 1;
 }
 
-header .actions span {
-  font-size: 2em;
+header .actions .action {
   padding: 0 15px;
-  line-height: 1.8em;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  margin-top: 1.8em;
+}
+
+header .actions .action .active {
+  color: hsl(152, 80%, 40%);
 }
 
 .logo {

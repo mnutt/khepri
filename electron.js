@@ -30,7 +30,7 @@ try {
 
 const server = new Server();
 
-let conf, mainWindow, canQuit;
+let conf, mainWindow, canQuit, tailPid;
 
 app.on('window-all-closed', function onWindowAllClosed() {
   app.quit();
@@ -39,9 +39,16 @@ app.on('window-all-closed', function onWindowAllClosed() {
 app.on('will-quit', function(e) {
   if(canQuit) { return; }
 
+  if(tailPid) {
+    process.kill(tailPid, 'SIGTERM');
+  }
+
   stop([], 'SIGQUIT', () => {
     canQuit = true;
-    app.quit();
+
+    process.nextTick(() => {
+      app.quit();
+    });
   });
 
   e.preventDefault();
@@ -109,6 +116,7 @@ app.on('ready', function onReady() {
     console.log('An exception in the main thread was not handled.');
     console.log('This is a serious issue that needs to be handled and/or debugged.');
     console.log(`Exception: ${err}`);
+    console.log(err.stack);
   });
 });
 
@@ -165,6 +173,10 @@ server.on('get-all', function getAll (req, next) {
 
 server.on('get-one', function getOne (req, next) {
   next(null, getProcessStatus(req.body.name));
+});
+
+server.on('tail-pid', function setTailPid (req, next) {
+  tailPid = req.body;
 });
 
 server.on('task', function task (req, next) {

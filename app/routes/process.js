@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { get, inject } = Ember;
+const { get, set, inject } = Ember;
 
 export default Ember.Route.extend({
   processes: inject.service(),
@@ -15,6 +15,7 @@ export default Ember.Route.extend({
   actions: {
     willTransition() {
       this.currentModel.tearDownTail();
+      set(this, 'controller.follow', true);
     }
   }
 });
