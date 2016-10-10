@@ -224,16 +224,6 @@ header .actions .action .active {
   color: hsl(152, 80%, 40%);
 }
 
-.logo {
-  text-transform: uppercase;
-  text-align: center;
-  color: rgb(130,121,134);
-  font-size: 5em;
-  flex: 1;
-  font-weight: bold;
-  font-family: "Source Sans Pro", monospace;
-}
-
 .logo-container {
   position: absolute;
   top: 0;
@@ -245,4 +235,21 @@ header .actions .action .active {
   flex-direction: row;
   align-items: center;
   -webkit-app-region: drag;
+}
+
+.logo-container .logo {
+  text-transform: uppercase;
+  text-align: center;
+  color: rgb(130,121,134);
+  font-size: 5vw;
+  flex: 1;
+  font-weight: bold;
+  font-family: "Source Sans Pro", monospace;
+}
+
+.logo-container .logo img {
+  display: block;
+  margin: auto;
+  opacity: 0.3;
+  width: 60%;
 }
