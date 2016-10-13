@@ -25,13 +25,13 @@ if(mpidfile) {
   fs.writeFileSync(mpidfile, process.pid);
 }
 
-let bashStuff = [
+var bashStuff = [
   "trap 'kill $(jobs -p)' EXIT",
   cmd
 ].join('\n');
 
-let term, firstAttemptTime;
-let attemptCount = 0;
+var term, firstAttemptTime;
+var attemptCount = 0;
 
 function startProcess() {
   term = pty.spawn('bash', ["-c", bashStuff], {
@@ -42,7 +42,7 @@ function startProcess() {
     env: process.env
   });
 
-  let out = logfile ? fs.createWriteStream(logfile, {flags: "a"}) : process.stdout;
+  var out = logfile ? fs.createWriteStream(logfile, {flags: "a"}) : process.stdout;
 
   out.write("=== mon starting ===\n");
 
@@ -63,10 +63,10 @@ function processDied(code, signal) {
 
   attemptCount += 1;
 
-  let timeSinceFirstAttempt = new Date() - firstAttemptTime;
+  var timeSinceFirstAttempt = new Date() - firstAttemptTime;
 
   if(timeSinceFirstAttempt < 60000 && attemptCount >= attempts) {
-    let timeUntilNextAttempt = 60000 - timeSinceFirstAttempt;
+    var timeUntilNextAttempt = 60000 - timeSinceFirstAttempt;
     attemptCount = 0;
 
     setTimeout(startProcess, timeUntilNextAttempt);
@@ -83,7 +83,7 @@ function waitForChildExit(signal) {
     console.log("killing child", term.pid);
     process.kill(term.pid, 'SIGTERM');
   }
-  let killTries = 0;
+  var killTries = 0;
 
   function checkForDead() {
     if(killTries > 30) {
