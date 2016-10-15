@@ -52,9 +52,7 @@ export default Ember.Service.extend({
   },
 
   restart(name) {
-    return this.execTask({task: 'stop', name}).then(() => {
-      return this.execTask({task: 'start', name});
-    }).then((data) => {
+    return this.execTask({task: 'restart', name}).then((data) => {
       return this.createOrUpdate(data);
     });
   },

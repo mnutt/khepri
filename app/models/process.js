@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { get, set, computed, run, inject } = Ember;
+const { get, set, computed, run } = Ember;
 
 const spawn = requireNode('child_process').spawn;
 const ansiUp = requireNode('ansi_up');
@@ -20,6 +20,7 @@ function endOfFile(path, lineCount, cb) {
 export default Ember.Object.extend({
   history: 5000,
   alive: computed.equal('state', 'alive'),
+  stopped: computed.equal('state', 'stopped'),
   tail: null,
 
   data: [],
@@ -62,6 +63,6 @@ export default Ember.Object.extend({
       use_classes: true
     });
 
-    return htmlified.replace(/=== mon starting ===/, '<hr>');
+    return htmlified.replace(/=== monitor starting ===/, '<hr>');
   }
 });

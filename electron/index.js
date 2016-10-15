@@ -5,12 +5,10 @@ const electron             = require('electron');
 const path                 = require('path');
 const {app, BrowserWindow} = electron;
 const dirname              = __dirname || path.resolve(path.dirname());
-const emberAppLocation     = `file://${dirname}/dist/index.html`;
+const emberAppLocation     = `file://${dirname}/../dist/index.html`;
 
-const fs                   = require('fs');
 const debug                = require('debug');
-const mkdir                = require('mkdirp').sync;
-const Mongroup             = require('mongroup');
+const MonitorGroup         = require('./monitor-group');
 const ms                   = require('ms');
 const Server               = require('electron-rpc/server');
 
@@ -30,7 +28,11 @@ try {
 
 const server = new Server();
 
-let conf, mainWindow, canQuit, tailPid;
+let mainWindow, canQuit, tailPid;
+
+const dataDir = path.join(app.getPath('userData'), 'data');
+
+const monitorGroup = new MonitorGroup(dataDir);
 
 app.on('window-all-closed', function onWindowAllClosed() {
   app.quit();
@@ -43,7 +45,7 @@ app.on('will-quit', function(e) {
     process.kill(tailPid, 'SIGTERM');
   }
 
-  stop([], 'SIGQUIT', () => {
+  stopAll().then(() => {
     canQuit = true;
 
     process.nextTick(() => {
@@ -54,10 +56,8 @@ app.on('will-quit', function(e) {
   e.preventDefault();
 });
 
-
 app.on('ready', function onReady() {
   canQuit = false;
-  conf = loadConfig();
 
   mainWindow = new BrowserWindow({
     width: 900,
@@ -123,49 +123,6 @@ app.on('ready', function onReady() {
   });
 });
 
-function loadConfig () {
-  const dir = path.join(app.getPath('userData'), 'data');
-  const configFile = dir + '/config.json';
-  let conf, data;
-
-  try {
-    data = fs.readFileSync(configFile);
-  } catch (e) {
-    if (e.code === 'ENOENT') {
-      mkdir(dir);
-      fs.writeFileSync(configFile, fs.readFileSync(__dirname + '/config.json'));
-      return loadConfig();
-    } else {
-      throw e;
-    }
-  }
-
-  try {
-    conf = JSON.parse(data.toString());
-  } catch (e) {
-    var code = dialog.showMessageBox({
-      message: 'Invalid configuration file\nCould not parse JSON',
-      detail: e.stack,
-      buttons: ['Reload Config', 'Exit app']
-    });
-    if (code === 0) {
-      return loadConfig();
-    } else {
-      return app.quit();
-    }
-  }
-
-  conf.exec = {cwd: dir};
-  conf.logs = path.resolve(path.join(dir, conf.logs || 'logs'));
-  conf.pids = path.resolve(path.join(dir, conf.pids || 'pids'));
-
-  mkdir(conf.logs);
-  mkdir(conf.pids);
-
-  conf.mon = path.join(__dirname, 'mon.js');
-  return conf;
-}
-
 server.on('terminate', function terminate (ev) {
   app.quit();
 });
@@ -183,12 +140,12 @@ server.on('tail-pid', function setTailPid (req, next) {
 });
 
 server.on('task', function task (req, next) {
-  if (req.body.task === 'startAll') { start([], updateAll); };
-  if (req.body.task === 'stopAll') { stop([], req.body.signal, updateAll); };
-  if (req.body.task === 'restartAll') { restart([], updateAll); };
-  if (req.body.task === 'start') { start([req.body.name], updateSingle); };
-  if (req.body.task === 'stop') { stop([req.body.name], req.body.signal, updateSingle); };
-  if (req.body.task === 'restart') { restart([req.body.name], updateSingle); };
+  if (req.body.task === 'startAll')   { startAll()             .then(updateAll); };
+  if (req.body.task === 'stopAll')    { stopAll()              .then(updateAll); };
+  if (req.body.task === 'restartAll') { restartAll()           .then(updateAll); };
+  if (req.body.task === 'start')      { start(req.body.name)   .then(updateSingle); };
+  if (req.body.task === 'stop')       { stop(req.body.name)    .then(updateSingle); };
+  if (req.body.task === 'restart')    { restart(req.body.name) .then(updateSingle); };
 
   function updateAll (err) {
     if (err) { throw err; };
@@ -202,11 +159,12 @@ server.on('task', function task (req, next) {
 });
 
 server.on('open-dir', function openDir (ev) {
-  shell.showItemInFolder(path.join(conf.exec.cwd, 'config.json'));
+  shell.showItemInFolder(path.join(monitorGroup.dir, 'config.json'));
 });
 
 server.on('open-logs-dir', function openLogsDir (req) {
-  shell.showItemInFolder(path.join(conf.logs, req.body.name + '.log'));
+  var proc = monitorGroup.find(req.body.name);
+  shell.showItemInFolder(proc.logfile);
 });
 
 function getProcessStatus (procName) {
@@ -218,22 +176,21 @@ function getProcessStatus (procName) {
 
 function getProcessesStatus () {
   debug('reload config, get proc status...');
-  conf = loadConfig();
-  var group = new Mongroup(conf);
-  var procs = group.procs;
+  monitorGroup.loadConfig();
+  var procs = monitorGroup.processes;
 
   return procs.map(function each (proc) {
-    var uptime, state = proc.state();
+    let {uptime, state} = proc;
     if (state === 'alive') {
-      uptime = ms(Date.now() - proc.mtime(), { long: true });
+      uptime = ms(uptime, { long: true });
     }
 
     var item = {
-      cmd: proc.cmd,
+      cmd: proc.command,
       name: proc.name,
       state: state,
       pid: proc.pid,
-      log: path.join(conf.logs, `${proc.name}.log`),
+      log: proc.logfile,
       uptime: uptime ? uptime : undefined
     };
 
@@ -241,36 +198,26 @@ function getProcessesStatus () {
   });
 }
 
-function restart (procs, cb) {
-  stop(procs, 'SIGQUIT', function onstop (err1) {
-    start(procs, function onstart (err2) {
-      if (cb) {
-        cb(err1 || err2);
-      }
-    });
-  });
+function restart (name, cb) {
+  return monitorGroup.find(name).restart();
 }
 
-function start (procs, cb) {
-  var group = new Mongroup(conf);
-  group.start(procs, function onstart (err) {
-    if (err) {
-      return cb(err);
-    }
-    return cb();
-  });
+function start (name, cb) {
+  return monitorGroup.find(name).start();
 }
 
-function stop (procs, signal, cb) {
-  if (!signal) {
-    signal = 'SIGQUIT';
-  }
+function stop (name, cb) {
+  return monitorGroup.find(name).stop();
+}
 
-  var group = new Mongroup(conf);
-  group.stop(procs, signal, function onstop (err) {
-    if (!err || err.code === 'ENOENT') {
-      return cb();
-    }
-    return cb(err);
-  });
+function stopAll() {
+  return monitorGroup.stopAll();
+}
+
+function startAll() {
+  return monitorGroup.startAll();
+}
+
+function restartAll() {
+  return monitorGroup.restartAll();
 }

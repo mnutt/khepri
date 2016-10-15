@@ -8,9 +8,10 @@
     "test": "tests"
   },
   "scripts": {
-    "build": "ember build",
-    "start": "ember server",
-    "test": "ember test"
+    "build": "node_modules/.bin/ember build",
+    "start": "node_modules/.bin/ember electron",
+    "test": "node_modules/.bin/ember test",
+    "postinstall": "./node_modules/.bin/electron-rebuild"
   },
   "repository": "",
   "engines": {
@@ -23,11 +24,10 @@
     "daemon": "^1.1.0",
     "debug": "^2.2.0",
     "electron-rpc": "^2.0.1",
-    "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "mongroup": "maxogden/node-mongroup#monbin",
     "ms": "^0.7.1",
     "pty.js": "^0.3.1",
+    "rsvp": "^3.3.3",
     "tail": "^1.2.1",
     "user-env": "^2.0.0"
   },
@@ -61,18 +61,20 @@
     "ember-welcome-page": "^1.0.1",
     "loader.js": "^4.0.1"
   },
-  "main": "electron.js",
+  "main": "electron/index.js",
   "ember-electron": {
     "copy-files": [
-      "electron.js",
-      "package.json"
+      "electron",
+      "package.json",
+      "dist",
+      "public"
     ],
-    "name": null,
+    "name": "Khepri",
     "platform": null,
     "arch": null,
-    "version": null,
-    "app-bundle-id": null,
-    "app-category-type": null,
+    "version": "1.4.0",
+    "app-bundle-id": "im.nutt.khepri",
+    "app-category-type": "public.app-category.developer-tools",
     "app-copyright": null,
     "app-version": null,
     "asar": null,
@@ -83,7 +85,7 @@
     "extend-info": null,
     "extra-resource": null,
     "helper-bundle-id": null,
-    "icon": null,
+    "icon": "public/assets/images/icon.icns",
     "ignore": null,
     "out": null,
     "osx-sign": {
