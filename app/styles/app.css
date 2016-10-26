@@ -51,6 +51,9 @@
   bottom: 0;
   overflow: auto;
 
+  -webkit-user-select: text;
+  user-select: text;
+  cursor: text;
   background-color: rgb(40,31,44);
   color: #fff;
   word-break: break-all;
