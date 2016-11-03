@@ -1,6 +1,10 @@
 <nav class="nav-group">
   <h5 class="nav-group-title">Processes</h5>
 
+  <button {{action 'startAll'}}>Start All</button>
+  <button {{action 'stopAll'}}>Stop All</button>
+  <button {{action 'restartAll'}}>Restart All</button>
+
   {{#each processes.list as |process|}}
     {{#link-to 'process' process.name class="nav-group-item"}}
       <span class="icon icon-db-shape {{process.state}}"></span>

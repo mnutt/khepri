@@ -45,15 +45,33 @@ export default Ember.Service.extend({
     });
   },
 
+  stopAll() {
+    get(this, 'list').forEach((process) => {
+      this.stop(process.name, 'SIGTERM');
+    });
+  },
+
   start(name) {
     return this.execTask({task: 'start', name}).then((data) => {
       return this.createOrUpdate(data);
     });
   },
 
+  startAll() {
+    get(this, 'list').forEach((process) => {
+      this.start(process.name);
+    });
+  },
+
   restart(name) {
     return this.execTask({task: 'restart', name}).then((data) => {
       return this.createOrUpdate(data);
+    });
+  },
+
+  restartAll() {
+    get(this, 'list').forEach((process) => {
+      this.restart(process.name);
     });
   },
 
