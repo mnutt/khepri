@@ -16,6 +16,10 @@ export default Ember.Route.extend({
     willTransition() {
       this.currentModel.tearDownTail();
       set(this, 'controller.follow', true);
+    },
+
+    fireCommandToProcess(cmd) {
+      get(this, 'processes').sendCommand(this.currentModel.name, cmd);
     }
   }
 });

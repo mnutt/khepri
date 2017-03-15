@@ -17,6 +17,6 @@
 <footer>
   <label>
     <span>{{{">>"}}}</span>
-    {{input value=command}}
+    {{input value=model.command enter=(action 'fireCommand')}}
   </label>
 </footer>

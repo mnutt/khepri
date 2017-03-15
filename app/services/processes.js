@@ -57,6 +57,12 @@ export default Ember.Service.extend({
     });
   },
 
+  sendCommand(name, command) {
+    return this.execTask({task: 'sendCommand', name, command}).then((data) => {
+      return this.createOrUpdate(data);
+    });
+  },
+
   request(command, value, callback) {
     return this.client.request(command, value, callback);
   },
