@@ -48,18 +48,21 @@
   top: 50px;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 30px;
   overflow: auto;
 
+  word-break: break-all;
+  white-space: pre-wrap;
+  padding: 10px;
+}
+
+.log-tail, footer input {
+  font-family: "Consolas", "Menlo", "Monaco", monospace;
+  background-color: rgb(40,31,44);
+  color: #fff;
   -webkit-user-select: text;
   user-select: text;
   cursor: text;
-  background-color: rgb(40,31,44);
-  color: #fff;
-  word-break: break-all;
-  white-space: pre-wrap;
-  font-family: "Consolas", "Menlo", "Monaco", monospace;
-  padding: 10px;
 }
 
 .log-tail hr {
@@ -225,6 +228,40 @@ header .actions .action {
 
 header .actions .action .active {
   color: hsl(152, 80%, 40%);
+}
+
+footer {
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+footer label,
+footer input {
+  border-width: 1px 0 0 0;
+  display: block;
+  width: 100%;
+}
+
+footer label {
+  margin-bottom: 0;
+}
+
+footer span {
+  position: absolute;
+  left: 5px;
+  line-height: 30px;
+}
+
+footer input {
+  padding: 5px 0 5px 30px;
+}
+
+footer input::before {
+  display: block;
+  content: ">> ";
 }
 
 .logo-container {
