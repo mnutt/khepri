@@ -96,11 +96,16 @@ export default Ember.Service.extend({
       this.request('get-all', (err, data) => {
         if(err) { return reject(err); }
 
-        let newRecords = data.map((record) => {
+        let allRecordsExisted = true;
+        const newRecords = data.map((record) => {
+          if(!get(this, `itemMap.${record.name}`)) { allRecordsExisted = false; }
           return this.createOrUpdate(record);
         });
 
-        set(this, 'list', newRecords);
+        if(get(this, 'list.length') !== data.length || !allRecordsExisted) {
+          set(this, 'list', newRecords);
+        };
+
         resolve(newRecords);
       });
     });
