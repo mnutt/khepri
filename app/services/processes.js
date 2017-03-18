@@ -109,8 +109,8 @@ export default Ember.Service.extend({
         });
 
         if(get(this, 'list.length') !== data.length || !allRecordsExisted) {
-        set(this, 'list', newRecords);
-        };
+          set(this, 'list', newRecords);
+        }
 
         resolve(newRecords);
       });
