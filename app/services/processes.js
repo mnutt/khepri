@@ -7,10 +7,11 @@ const Client = requireNode('electron-rpc/client');
 
 export default Ember.Service.extend({
   client: null,
-  list: [],
+  list: null,
   itemMap: {},
 
   init() {
+    this.list = Ember.A();
     this.client = new Client();
     this.updateLoop();
   },
