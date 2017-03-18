@@ -43,6 +43,16 @@
   color: #FFF !important;
 }
 
+.meta-actions {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.meta-actions button {
+  flex: 1;
+  margin: 0 2px;
+}
+
 .log-tail {
   position: absolute;
   top: 50px;

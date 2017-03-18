@@ -1,9 +1,11 @@
 <nav class="nav-group">
   <h5 class="nav-group-title">Processes</h5>
 
-  <button {{action 'startAll'}}>Start All</button>
-  <button {{action 'stopAll'}}>Stop All</button>
-  <button {{action 'restartAll'}}>Restart All</button>
+  <div class="meta-actions">
+    <button class="btn btn-default" {{action 'startAll'}}>Start All</button>
+    <button class="btn btn-default" {{action 'stopAll'}}>Stop All</button>
+    <button class="btn btn-default" {{action 'restartAll'}}>Restart All</button>
+  </div>
 
   {{#each processes.list as |process|}}
     {{#link-to 'process' process.name class="nav-group-item"}}
