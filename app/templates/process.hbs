@@ -13,3 +13,10 @@
 </header>
 
 {{log-tail follow=follow data=model.data}}
+
+<footer>
+  <label>
+    <span>{{{">>"}}}</span>
+    {{input value=model.command enter=(action 'fireCommand')}}
+  </label>
+</footer>

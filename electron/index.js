@@ -147,6 +147,10 @@ server.on('task', function task (req, next) {
   if (req.body.task === 'stop')       { stop(req.body.name)    .then(updateSingle); };
   if (req.body.task === 'restart')    { restart(req.body.name) .then(updateSingle); };
 
+  if (req.body.task === 'sendCommand') {
+    sendCommand(req.body.name, req.body.command).then(updateSingle);
+  };
+
   function updateAll (err) {
     if (err) { throw err; };
     next(null, getProcessesStatus());
@@ -214,6 +218,10 @@ function start (name, cb) {
 
 function stop (name, cb) {
   return monitorGroup.find(name).stop();
+}
+
+function sendCommand(name, command) {
+  return monitorGroup.find(name).sendCommand(command);
 }
 
 function stopAll() {

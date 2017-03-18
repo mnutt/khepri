@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { set } = Ember;
+const { get, set } = Ember;
 
 export default Ember.Controller.extend({
   follow: true,
@@ -12,6 +12,11 @@ export default Ember.Controller.extend({
 
     toggleFollow() {
       this.toggleProperty('follow');
+    },
+
+    fireCommand() {
+      this.send('fireCommandToProcess', get(this, 'model.command'));
+      set(this, 'model.command', null);
     }
   }
 });

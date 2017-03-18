@@ -100,6 +100,16 @@ class Monitor extends EventEmitter {
     });
   }
 
+  sendCommand(command) {
+    return new RSVP.Promise((resolve, reject) => {
+      if (this.state !== 'alive') {
+        return resolve();
+      }
+
+      return resolve(this.term.write(command + "\r"));
+    });
+  }
+
   processDied(code, signal) {
     if(this.state !== 'alive') { return; }
 

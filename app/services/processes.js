@@ -76,6 +76,12 @@ export default Ember.Service.extend({
     });
   },
 
+  sendCommand(name, command) {
+    return this.execTask({task: 'sendCommand', name, command}).then((data) => {
+      return this.createOrUpdate(data);
+    });
+  },
+
   request(command, value, callback) {
     return this.client.request(command, value, callback);
   },
@@ -103,7 +109,7 @@ export default Ember.Service.extend({
         });
 
         if(get(this, 'list.length') !== data.length || !allRecordsExisted) {
-          set(this, 'list', newRecords);
+        set(this, 'list', newRecords);
         };
 
         resolve(newRecords);
