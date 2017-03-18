@@ -7,7 +7,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('processes');
+  this.route('processes', function() {
+    this.route('new');
+  });
   this.route('process', { path: '/processes/:name' });
 });
 

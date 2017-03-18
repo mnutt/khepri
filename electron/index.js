@@ -158,6 +158,12 @@ server.on('task', function task (req, next) {
   }
 });
 
+server.on('create', function createProcess (req, next) {
+  let [name, command] = req.body;
+  monitorGroup.createProcess(name, command);
+  next(null, getProcessStatus(req.body.name));
+});
+
 server.on('open-dir', function openDir (ev) {
   shell.showItemInFolder(path.join(monitorGroup.dir, 'config.json'));
 });
@@ -182,7 +188,7 @@ function getProcessesStatus () {
   return procs.map(function each (proc) {
     let {uptime, state} = proc;
     if (state === 'alive') {
-      uptime = ms(uptime, { long: true });
+      uptime = ms(parseInt(uptime) || 0, { long: true });
     }
 
     var item = {

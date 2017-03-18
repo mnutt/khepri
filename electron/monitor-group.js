@@ -72,6 +72,17 @@ class MonitorGroup extends EventEmitter {
     return conf;
   }
 
+  createProcess(name, command) {
+    let data = fs.readFileSync(this.configFile);
+    let config = JSON.parse(data);
+
+    config.processes[name] = command;
+    data = JSON.stringify(config, null, 2);
+
+    fs.writeFileSync(this.configFile, data);
+    this.loadConfig();
+  }
+
   find(name) {
     return this.processes.find((p) => p && p.name == name);
   }

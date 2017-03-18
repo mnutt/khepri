@@ -256,3 +256,25 @@ header .actions .action .active {
   opacity: 0.3;
   width: 60%;
 }
+
+.new-process {
+  padding: 20px 40px;
+}
+
+.tip {
+  font-size: 0.8;
+  font-style: italic;
+  margin-top: 0.3em;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form .form-group {
+  margin-bottom: 1em;
+}
+
+form .btn-primary {
+  margin-top: 2em;
+}
