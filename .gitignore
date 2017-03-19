@@ -3,6 +3,7 @@
 # compiled output
 /dist
 /tmp
+/electron-out
 /electron-builds
 
 # dependencies

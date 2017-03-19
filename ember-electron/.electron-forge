@@ -1,0 +1,29 @@
+module.exports = {
+  "make_targets": {
+    "win32": [
+      "squirrel"
+    ],
+    "darwin": [
+      "zip"
+    ],
+    "linux": [
+      "deb",
+      "rpm"
+    ]
+  },
+  "electronPackagerConfig": {
+    "name" : "khepri"
+  },
+  "electronWinstallerConfig": {
+    "name": "khepri"
+  },
+  "electronInstallerDebian": {},
+  "electronInstallerRedhat": {},
+  "github_repository": {
+    "owner": "movableink",
+    "name": "khepri"
+  },
+  "windowsStoreConfig": {
+    "packageName": "khepri"
+  }
+};
