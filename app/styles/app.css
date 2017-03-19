@@ -28,6 +28,7 @@
 .nav-group-item {
   display: flex;
   padding: 3px 0 3px 8px;
+  height: 28px;
 }
 
 .nav-group-item .name {
