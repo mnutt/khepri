@@ -3,9 +3,9 @@
   -webkit-app-region: drag;
 }
 
-.process-list .name {
-  overflow: hidden;
-  width: 130px;
+.process-list {
+  display: flex;
+  flex-direction: column;
 }
 
 .process-list .dead {
@@ -20,19 +20,25 @@
   color: hsl(152, 80%, 40%)
 }
 
+.nav-group {
+  flex: 1;
+  overflow: auto;
+}
+
 .nav-group-item {
   display: flex;
   padding: 3px 0 3px 8px;
 }
 
-.nav-group-item name {
+.nav-group-item .name {
   flex: 1;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .nav-group-item .actions {
-  min-width: 60px;
+  flex: 0 0 60px;
 }
 
 .nav-group-item .actions span {
@@ -45,7 +51,8 @@
 
 .meta-actions {
   display: flex;
-  margin-bottom: 5px;
+  padding: 3px 0;
+  border-top: 1px solid #ddd;
 }
 
 .meta-actions button {
@@ -54,11 +61,7 @@
 }
 
 .log-tail {
-  position: absolute;
-  top: 50px;
-  left: 0;
-  right: 0;
-  bottom: 30px;
+  flex: 1;
   overflow: auto;
 
   word-break: break-all;
@@ -210,11 +213,12 @@
   background-color: #FFF;
 }
 
+.pane {
+  display: flex;
+  flex-direction: column;
+}
+
 header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   height: 50px;
   display: flex;
   flex-direction: row;
@@ -242,10 +246,7 @@ header .actions .action .active {
 
 footer {
   color: #fff;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: 31px;
 }
 
 footer label,
