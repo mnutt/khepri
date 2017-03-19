@@ -20,7 +20,7 @@ function endOfFile(path, lineCount, cb) {
 }
 
 export default Ember.Object.extend({
-  history: 5000,
+  history: 1000,
   alive: computed.equal('state', 'alive'),
   stopped: computed.equal('state', 'stopped'),
   tail: null,
