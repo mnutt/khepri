@@ -1,8 +1,6 @@
 {
   "name": "khepri",
   "dependencies": {
-    "ember": "v2.9.0-beta.5",
-    "ember-cli-shims": "0.1.1",
     "photon": "^0.1.2-alpha"
   }
 }

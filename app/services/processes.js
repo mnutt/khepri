@@ -1,3 +1,5 @@
+/* global requireNode */
+
 import Ember from 'ember';
 import Process from 'khepri/models/process';
 
@@ -33,7 +35,8 @@ export default Ember.Service.extend({
         this.updateLoop();
       }, 1000);
     }).catch((err) => {
-      console.log("Service update error", err);
+      const { log } = console;
+      log("Service update error", err);
       run.later(() => {
         this.updateLoop();
       }, 5000);

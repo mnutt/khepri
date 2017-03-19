@@ -1,3 +1,5 @@
+/* global requireNode */
+
 import Ember from 'ember';
 
 const { get, set, computed, run } = Ember;
