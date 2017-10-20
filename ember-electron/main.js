@@ -1,9 +1,8 @@
 /* eslint-env node */
 'use strict';
 
-const electron                         = require('electron');
+const { app, BrowserWindow, protocol } = require('electron');
 const { dirname, join, resolve }       = require('path');
-const { app, BrowserWindow, protocol } = electron;
 const protocolServe                    = require('electron-protocol-serve');
 
 const debug                            = require('debug');

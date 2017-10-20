@@ -1,4 +1,4 @@
-/* jshint undef: false */
+/* eslint-env node */
 
 const {BrowserWindow, app} = require('electron');
 
