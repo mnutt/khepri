@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env node */
 'use strict';
 
 const electron                         = require('electron');
@@ -7,7 +7,7 @@ const { app, BrowserWindow, protocol } = electron;
 const protocolServe                    = require('electron-protocol-serve');
 
 const debug                            = require('debug');
-const MonitorGroup                     = require('./monitor-group');
+const MonitorGroup                     = require('./lib/monitor-group');
 const ms                               = require('ms');
 const Server                           = require('electron-rpc/server');
 
@@ -72,8 +72,6 @@ app.on('ready', function onReady() {
   }
 
   server.configure(mainWindow.webContents);
-
-  delete mainWindow.module;
 
   const emberAppLocation = 'serve://dist';
 
