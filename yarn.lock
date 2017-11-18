@@ -3232,6 +3232,21 @@ electron-compilers@*:
     toutsuite "^0.6.0"
     typescript ">=1.6"
 
+electron-context-menu@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.9.1.tgz#ed4df20c080491c3c996abfcb363159946a38058"
+  dependencies:
+    electron-dl "^1.2.0"
+    electron-is-dev "^0.1.1"
+
+electron-dl@^1.2.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/electron-dl/-/electron-dl-1.10.0.tgz#f94416064056fc6f2a86ae498614c93526890af9"
+  dependencies:
+    ext-name "^5.0.0"
+    pupa "^1.0.0"
+    unused-filename "^1.0.0"
+
 electron-download@^3.0.1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/electron-download/-/electron-download-3.3.0.tgz#2cfd54d6966c019c4d49ad65fbe65cc9cdef68c8"
@@ -3373,6 +3388,10 @@ electron-installer-redhat@^0.5.0:
     temp "^0.8.3"
     word-wrap "^1.2.1"
     yargs "7.0.2"
+
+electron-is-dev@^0.1.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.1.2.tgz#8a1043e32b3a1da1c3f553dce28ce764246167e3"
 
 electron-osx-sign@^0.4.1:
   version "0.4.4"
@@ -4385,6 +4404,19 @@ express@^4.10.7, express@^4.12.3:
     type-is "~1.6.14"
     utils-merge "1.0.0"
     vary "~1.1.0"
+
+ext-list@^2.0.0:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/ext-list/-/ext-list-2.2.2.tgz#0b98e64ed82f5acf0f2931babf69212ef52ddd37"
+  dependencies:
+    mime-db "^1.28.0"
+
+ext-name@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ext-name/-/ext-name-5.0.0.tgz#70781981d183ee15d13993c8822045c506c8f0a6"
+  dependencies:
+    ext-list "^2.0.0"
+    sort-keys-length "^1.0.0"
 
 extend@3, extend@^3.0.0, extend@~3.0.0:
   version "3.0.0"
@@ -6319,6 +6351,10 @@ micromatch@^2.1.5, micromatch@^2.3.7:
   version "1.26.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.26.0.tgz#eaffcd0e4fc6935cf8134da246e2e6c35305adff"
 
+mime-db@^1.28.0:
+  version "1.31.0"
+  resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.31.0.tgz#a49cd8f3ebf3ed1a482b60561d9105ad40ca74cb"
+
 mime-db@~1.12.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.12.0.tgz#3d0c63180f458eb10d325aaa37d7c58ae312e9d7"
@@ -6431,6 +6467,10 @@ mock-require@^2.0.1:
   resolved "https://registry.yarnpkg.com/mock-require/-/mock-require-2.0.1.tgz#7b0ebc79b8af5dfb1e9caefeb977804e71d2e004"
   dependencies:
     caller-id "^0.1.0"
+
+modify-filename@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/modify-filename/-/modify-filename-1.1.0.tgz#9a2dec83806fbb2d975f22beec859ca26b393aa1"
 
 morgan@^1.8.1:
   version "1.9.0"
@@ -7378,6 +7418,10 @@ punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
+pupa@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/pupa/-/pupa-1.0.0.tgz#9a9568a5af7e657b8462a6e9d5328743560ceff6"
+
 q@^1.1.2:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
@@ -8202,6 +8246,12 @@ socket.io@1.6.0, socket.io@^1.4.8:
     socket.io-client "1.6.0"
     socket.io-parser "2.3.1"
 
+sort-keys-length@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/sort-keys-length/-/sort-keys-length-1.0.1.tgz#9cb6f4f4e9e48155a6aa0671edd336ff1479a188"
+  dependencies:
+    sort-keys "^1.0.0"
+
 sort-keys@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/sort-keys/-/sort-keys-1.1.2.tgz#441b6d4d346798f1b4e49e8920adfba0e543f9ad"
@@ -8973,6 +9023,13 @@ untildify@^2.1.0:
   resolved "https://registry.yarnpkg.com/untildify/-/untildify-2.1.0.tgz#17eb2807987f76952e9c0485fc311d06a826a2e0"
   dependencies:
     os-homedir "^1.0.0"
+
+unused-filename@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/unused-filename/-/unused-filename-1.0.0.tgz#d340880f71ae2115ebaa1325bef05cc6684469c6"
+  dependencies:
+    modify-filename "^1.1.0"
+    path-exists "^3.0.0"
 
 url@0.10.3:
   version "0.10.3"

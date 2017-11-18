@@ -9,6 +9,7 @@ const debug                            = require('debug');
 const MonitorGroup                     = require('./lib/monitor-group');
 const ms                               = require('ms');
 const Server                           = require('electron-rpc/server');
+const contextMenu                      = require('electron-context-menu');
 
 // Registering a protocol & schema to serve our Ember application
 protocol.registerStandardSchemes(['serve'], { secure: true });
@@ -34,6 +35,8 @@ const dataDir = join(app.getPath('userData'), 'data');
 console.log(dataDir);
 
 const monitorGroup = new MonitorGroup(dataDir);
+
+contextMenu();
 
 app.on('window-all-closed', function onWindowAllClosed() {
   app.quit();
