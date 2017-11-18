@@ -22,7 +22,7 @@
 
 .nav-group {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: overlay;
   overflow-x: hidden;
 }
 
