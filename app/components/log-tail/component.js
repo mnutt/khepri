@@ -8,11 +8,15 @@ export default Ember.Component.extend({
 
   // If user scrolls up, stop following tail
   bindScrollUpwards: on('didInsertElement', function() {
-    this.$().get(0).addEventListener('mousewheel', (e) => {
-      if(e.deltaY >= 0) { return; } // ignore scroll down
+    const setFollow = () => {
+      const atBottom = this.element.clientHeight + this.element.scrollTop >= this.element.scrollHeight;
 
-      run.once(this, () => set(this, 'follow', false));
-    }, {passive: true});
+      set(this, 'follow', atBottom);
+    };
+
+    this.element.addEventListener('scroll', (e) => {
+      run(this, setFollow);
+    }, { passive: true });
   }),
 
   scrollToBottom: observer('data.length', 'follow', function() {
