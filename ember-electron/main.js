@@ -1,15 +1,19 @@
 /* eslint-env node */
 'use strict';
 
-const { app, BrowserWindow, protocol } = require('electron');
-const { dirname, join, resolve }       = require('path');
-const protocolServe                    = require('electron-protocol-serve');
+const electron      = require('electron');
+const path          = require('path');
+const protocolServe = require('electron-protocol-serve');
 
-const debug                            = require('debug');
-const MonitorGroup                     = require('./lib/monitor-group');
-const ms                               = require('ms');
-const Server                           = require('electron-rpc/server');
-const contextMenu                      = require('electron-context-menu');
+const debug         = require('debug');
+const MonitorGroup  = require('./lib/monitor-group');
+const ms            = require('ms');
+const Server        = require('electron-rpc/server');
+const contextMenu   = require('electron-context-menu');
+const windowMenu    = require('./lib/window-menu');
+
+const { app, BrowserWindow, protocol } = electron;
+const { dirname, join, resolve } = path;
 
 // Registering a protocol & schema to serve our Ember application
 protocol.registerStandardSchemes(['serve'], { secure: true });
@@ -72,6 +76,8 @@ app.on('ready', function onReady() {
   if(process.env.DEV_TOOLS) {
     mainWindow.webContents.openDevTools();
   }
+
+  windowMenu(dataDir);
 
   server.configure(mainWindow.webContents);
 
