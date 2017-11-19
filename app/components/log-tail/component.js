@@ -14,7 +14,7 @@ export default Ember.Component.extend({
       set(this, 'follow', atBottom);
     };
 
-    this.element.addEventListener('scroll', (e) => {
+    this.element.addEventListener('scroll', () => {
       run(this, setFollow);
     }, { passive: true });
   }),
