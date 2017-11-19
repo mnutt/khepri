@@ -9,15 +9,16 @@ Khepri is a process manager similar to foreman, but built as an electron-based g
 You will need the following things properly installed on your computer.
 
 * [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) (with NPM)
+* [Node.js](http://nodejs.org/)
+* [Yarn](https://yarnpkg.com/)
 
 ## Installation
 
 * `git clone git://github.com/mnutt/khepri.git`
 * `cd khepri`
-* `npm install`
+* `yarn`
 * `bower install`
-* `npm start`
+* `yarn start`
 
 ## Running / Development
 
@@ -34,9 +35,10 @@ You will need the following things properly installed on your computer.
 * `ember build` (development)
 * `ember build --environment production` (production)
 
-### Deploying
+### Packaging
 
-No instructions yet.
+* Build packages: `ember electron:package`
+* Build archives/installers: `ember electron:make`
 
 ## Acknowledgements
 
