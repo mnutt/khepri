@@ -56,9 +56,9 @@ app.on('will-quit', function(e) {
   stopAll().then(() => {
     canQuit = true;
 
-    process.nextTick(() => {
+    setTimeout(() => {
       app.quit();
-    });
+    }, 100);
   });
 
   e.preventDefault();
