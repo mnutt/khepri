@@ -1,7 +1,7 @@
 const EventEmitter = require('events');
 const path = require('path');
 const fs = require('fs');
-const pty = require('pty.js');
+const pty = require('node-pty');
 const RSVP = require('rsvp');
 
 class Monitor extends EventEmitter {

@@ -30,7 +30,7 @@
     "electron-squirrel-startup": "^1.0.0",
     "mkdirp": "^0.5.1",
     "ms": "^0.7.1",
-    "pty.js": "^0.3.1",
+    "node-pty": "0.7.4",
     "rsvp": "^3.3.3",
     "tail": "^1.2.1",
     "user-env": "^2.0.0"
