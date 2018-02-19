@@ -79,7 +79,7 @@ class Monitor extends EventEmitter {
 
       this.state = 'stopping';
 
-      var hardKill = setTimeout(function() {
+      var hardKill = setTimeout(() => {
         this.term.kill('SIGKILL');
       }, 30*1000);
 
