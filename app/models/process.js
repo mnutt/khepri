@@ -5,8 +5,11 @@ import Ember from 'ember';
 const { get, set, computed, run } = Ember;
 
 const spawn = requireNode('child_process').spawn;
-const ansiUp = requireNode('ansi_up');
+const AnsiUp = requireNode('ansi_up');
 const Client = requireNode('electron-rpc/client');
+
+const ansi = new AnsiUp.default;
+ansi.use_classes = true;
 
 const client = new Client();
 
@@ -60,10 +63,7 @@ export default Ember.Object.extend({
   },
 
   format(lines) {
-    let escaped = ansiUp.escape_for_html(lines);
-    let htmlified = ansiUp.ansi_to_html(escaped, {
-      use_classes: true
-    });
+    let htmlified = ansi.ansi_to_html(lines);
 
     return htmlified.replace(/=== monitor starting ===/, '<hr>');
   }
