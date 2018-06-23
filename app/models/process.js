@@ -1,8 +1,9 @@
 /* global requireNode */
 
-import Ember from 'ember';
+import { equal } from '@ember/object/computed';
 
-const { get, set, computed, run } = Ember;
+import EmberObject, { set, get } from '@ember/object';
+import { run } from '@ember/runloop';
 
 const spawn = requireNode('child_process').spawn;
 const AnsiUp = requireNode('ansi_up');
@@ -22,14 +23,19 @@ function endOfFile(path, lineCount, cb) {
   return tail;
 }
 
-export default Ember.Object.extend({
+export default EmberObject.extend({
   history: 1000,
-  alive: computed.equal('state', 'alive'),
-  stopped: computed.equal('state', 'stopped'),
+  alive: equal('state', 'alive'),
+  stopped: equal('state', 'stopped'),
   tail: null,
+  data: null,
+  newData: null, // buffer of new log data, used to debounce formatting calls
 
-  data: [],
-  newData: [], // buffer of new log data, used to debounce formatting calls
+  init() {
+    this._super(...arguments);
+    set(this, 'data', []);
+    set(this, 'newData', []);
+  },
 
   fillHistorical() {
     this.tearDownTail();

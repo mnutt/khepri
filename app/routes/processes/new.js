@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
+import { get } from '@ember/object';
 
-const { get, inject } = Ember;
-
-export default Ember.Route.extend({
-  processes: inject.service(),
+export default Route.extend({
+  processes: service(),
 
   actions: {
     createProcess(name, command) {
