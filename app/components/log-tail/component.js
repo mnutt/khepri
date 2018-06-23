@@ -14,9 +14,19 @@ export default Component.extend({
       set(this, 'follow', atBottom);
     };
 
-    this.element.addEventListener('scroll', () => {
+    this._scrollListener = () => {
       run(this, setFollow);
-    }, { passive: true });
+    };
+
+    this.element.addEventListener('scroll',
+                                  this._scrollListener,
+                                  { passive: true });
+  },
+
+  willDestroyElement() {
+    if (this._scrollListener) {
+      this.element.removeEventListener(this._scrollListener);
+    }
   },
 
   scrollToBottom: observer('data.length', 'follow', function() {
