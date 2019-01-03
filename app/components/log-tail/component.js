@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { observer, set, get } from '@ember/object';
-import { run, scheduleOnce } from '@ember/runloop';
+import { run, scheduleOnce, throttle } from '@ember/runloop';
 
 export default Component.extend({
   classNames: ['log-tail'],
@@ -29,12 +29,12 @@ export default Component.extend({
     }
   },
 
-  scrollToBottom: observer('data.length', 'follow', function() {
-    scheduleOnce('afterRender', this, () => {
-      if(!get(this, 'follow')) { return; }
+  didUpdate() {
+    this._super(...arguments);
 
-      let el = this.$().get(0);
-      if(el) { el.scrollTop = 10e8; }
-    });
-  })
+    throttle(this, function() {
+      if(!get(this, 'follow')) { return; }
+      if(this.element) { this.element.scrollTop = 10e8; }
+    }, 20, false);
+  }
 });

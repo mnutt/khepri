@@ -3946,11 +3946,9 @@ ember-inspector@2.0.4:
   dependencies:
     ember-new-computed "^1.0.0"
 
-ember-inspector@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/ember-inspector/-/ember-inspector-2.2.0.tgz#63e9f1ac811a8991db7bfd85a8c05b161bc5ec59"
-  dependencies:
-    ember-new-computed "^1.0.0"
+ember-inspector@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ember-inspector/-/ember-inspector-3.1.0.tgz#b6bb84a588a9dbfc09c9edbb5a60adbd6b989a8e"
 
 ember-load-initializers@^1.0.0:
   version "1.0.0"
