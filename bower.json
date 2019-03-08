@@ -1,6 +1,0 @@
-{
-  "name": "khepri",
-  "dependencies": {
-    "photon": "^0.1.2-alpha"
-  }
-}
