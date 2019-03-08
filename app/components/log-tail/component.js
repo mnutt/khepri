@@ -1,6 +1,6 @@
 import Component from '@ember/component';
-import { observer, set, get } from '@ember/object';
-import { run, scheduleOnce, throttle } from '@ember/runloop';
+import { set, get } from '@ember/object';
+import { run, throttle } from '@ember/runloop';
 
 export default Component.extend({
   classNames: ['log-tail'],
