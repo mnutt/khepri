@@ -1,27 +1,33 @@
 /* global requireNode */
 
-import Ember from 'ember';
-import Process from 'khepri/models/process';
+import { A } from '@ember/array';
 
-const { get, set, run, RSVP } = Ember;
+import Service from '@ember/service';
+import { set, get } from '@ember/object';
+import { run } from '@ember/runloop';
+import RSVP from 'rsvp';
+import Process from 'khepri/models/process';
 
 const Client = requireNode('electron-rpc/client');
 
-export default Ember.Service.extend({
+export default Service.extend({
   client: null,
   list: null,
-  itemMap: {},
+  itemMap: null,
 
   init() {
-    this.list = Ember.A();
-    this.client = new Client();
+    this._super(...arguments);
+
+    set(this, 'itemMap', {});
+    set(this, 'list',  A());
+    set(this, 'client', new Client());
     this.updateLoop();
   },
 
   find(name) {
     let item = get(this, `itemMap.${name}`);
     if(item) {
-      return Ember.RSVP.cast(item);
+      return RSVP.cast(item);
     } else {
       return this.update().then(() => {
         return get(this, `itemMap.${name}`);
@@ -86,7 +92,7 @@ export default Ember.Service.extend({
   },
 
   request(command, value, callback) {
-    return this.client.request(command, value, callback);
+    return get(this, 'client').request(command, value, callback);
   },
 
   execTask(task) {

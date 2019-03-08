@@ -1,8 +1,7 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { set, get } from '@ember/object';
 
-const { get, set } = Ember;
-
-export default Ember.Controller.extend({
+export default Controller.extend({
   follow: true,
 
   actions: {

@@ -17,7 +17,6 @@ You will need the following things properly installed on your computer.
 * `git clone git://github.com/mnutt/khepri.git`
 * `cd khepri`
 * `yarn`
-* `bower install`
 * `yarn start`
 
 ## Running / Development
@@ -29,6 +28,12 @@ You will need the following things properly installed on your computer.
 
 * `ember test`
 * `ember test --server`
+
+### Linting
+
+* `yarn run lint:hbs`
+* `yarn run lint:js`
+* `yarn run lint:js -- --fix`
 
 ### Building
 

@@ -1,30 +1,40 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { set, get } from '@ember/object';
+import { run, throttle } from '@ember/runloop';
 
-const { get, set, observer, on, run } = Ember;
-
-export default Ember.Component.extend({
+export default Component.extend({
   classNames: ['log-tail'],
   data: '',
 
   // If user scrolls up, stop following tail
-  bindScrollUpwards: on('didInsertElement', function() {
+  didInsertElement() {
     const setFollow = () => {
       const atBottom = this.element.clientHeight + this.element.scrollTop >= this.element.scrollHeight;
 
       set(this, 'follow', atBottom);
     };
 
-    this.element.addEventListener('scroll', () => {
+    this._scrollListener = () => {
       run(this, setFollow);
-    }, { passive: true });
-  }),
+    };
 
-  scrollToBottom: observer('data.length', 'follow', function() {
-    Ember.run.scheduleOnce('afterRender', this, () => {
+    this.element.addEventListener('scroll',
+                                  this._scrollListener,
+                                  { passive: true });
+  },
+
+  willDestroyElement() {
+    if (this._scrollListener) {
+      this.element.removeEventListener(this._scrollListener);
+    }
+  },
+
+  didUpdate() {
+    this._super(...arguments);
+
+    throttle(this, function() {
       if(!get(this, 'follow')) { return; }
-
-      let el = this.$().get(0);
-      if(el) { el.scrollTop = 10e8; }
-    });
-  })
+      if(this.element) { this.element.scrollTop = 10e8; }
+    }, 20, false);
+  }
 });

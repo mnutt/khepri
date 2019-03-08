@@ -2,26 +2,26 @@
 
 <nav class="nav-group">
   {{#each processes.list as |process|}}
-    {{#link-to 'process' process.name class="nav-group-item"}}
+    {{#link-to "process" process.name class="nav-group-item"}}
       <span class="icon icon-db-shape {{process.state}}"></span>
       <span class="name">{{process.name}}</span>
 
       <span class="actions">
-        <span {{action 'restart' process.name}} title="Restart" class="icon icon-cw"></span>
+        <span {{action "restart" process.name}} title="Restart" class="icon icon-cw"></span>
         {{#if process.stopped}}
-          <span {{action 'start' process.name}} title="Start" class="icon icon-play"></span>
+          <span {{action "start" process.name}} title="Start" class="icon icon-play"></span>
         {{else}}
-          <span {{action 'stop' process.name}} title="Stop" class="icon icon-stop"></span>
+          <span {{action "stop" process.name}} title="Stop" class="icon icon-stop"></span>
         {{/if}}
       </span>
     {{/link-to}}
   {{/each}}
 
-  {{#link-to 'processes.new' class="nav-group-item"}}+ Add process{{/link-to}}
+  {{#link-to "processes.new" class="nav-group-item"}}+ Add process{{/link-to}}
 </nav>
 
 <div class="meta-actions">
-  <button class="btn btn-default" {{action 'startAll'}}>Start All</button>
-  <button class="btn btn-default" {{action 'stopAll'}}>Stop All</button>
-  <button class="btn btn-default" {{action 'restartAll'}}>Restart All</button>
+  <button class="btn btn-default" {{action "startAll"}}>Start All</button>
+  <button class="btn btn-default" {{action "stopAll"}}>Stop All</button>
+  <button class="btn btn-default" {{action "restartAll"}}>Restart All</button>
 </div>

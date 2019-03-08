@@ -1,12 +1,16 @@
 /* global requireNode */
 
-import Ember from 'ember';
+import { equal } from '@ember/object/computed';
 
-const { get, set, computed, run } = Ember;
+import EmberObject, { set, get } from '@ember/object';
+import { run } from '@ember/runloop';
 
 const spawn = requireNode('child_process').spawn;
-const ansiUp = requireNode('ansi_up');
+const AnsiUp = requireNode('ansi_up');
 const Client = requireNode('electron-rpc/client');
+
+const ansi = new AnsiUp.default;
+ansi.use_classes = true;
 
 const client = new Client();
 
@@ -19,14 +23,19 @@ function endOfFile(path, lineCount, cb) {
   return tail;
 }
 
-export default Ember.Object.extend({
+export default EmberObject.extend({
   history: 1000,
-  alive: computed.equal('state', 'alive'),
-  stopped: computed.equal('state', 'stopped'),
+  alive: equal('state', 'alive'),
+  stopped: equal('state', 'stopped'),
   tail: null,
+  data: null,
+  newData: null, // buffer of new log data, used to debounce formatting calls
 
-  data: [],
-  newData: [], // buffer of new log data, used to debounce formatting calls
+  init() {
+    this._super(...arguments);
+    set(this, 'data', []);
+    set(this, 'newData', []);
+  },
 
   fillHistorical() {
     this.tearDownTail();
@@ -60,10 +69,7 @@ export default Ember.Object.extend({
   },
 
   format(lines) {
-    let escaped = ansiUp.escape_for_html(lines);
-    let htmlified = ansiUp.ansi_to_html(escaped, {
-      use_classes: true
-    });
+    let htmlified = ansi.ansi_to_html(lines);
 
     return htmlified.replace(/=== monitor starting ===/, '<hr>');
   }

@@ -1,9 +1,9 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { get } from '@ember/object';
 
-const { get, inject } = Ember;
-
-export default Ember.Component.extend({
-  processes: inject.service(),
+export default Component.extend({
+  processes: service(),
 
   classNames: ['pane', 'pane-sm', 'sidebar', 'process-list'],
 
