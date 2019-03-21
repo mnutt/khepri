@@ -22,7 +22,7 @@ class MonitorGroup extends EventEmitter {
     } catch (e) {
       if (e.code === 'ENOENT' && !this.failedWritingConfigDirectory) {
         mkdir(this.dataDir);
-        fs.writeFileSync(this.configFile, fs.readFileSync(__dirname + '/config.json'));
+        fs.writeFileSync(this.configFile, fs.readFileSync(__dirname + '/../config.json'));
         this.failedWritingConfigDirectory = true;
         return this.loadConfig();
       } else {
