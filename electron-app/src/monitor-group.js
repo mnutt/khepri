@@ -1,15 +1,14 @@
-const fs = require('fs');
-const EventEmitter = require('events');
-const mkdir = require('mkdirp').sync;
-const path = require('path');
-const Monitor = require('./monitor');
-const RSVP = require('rsvp');
+const fs = require("fs");
+const EventEmitter = require("events");
+const mkdir = require("mkdirp").sync;
+const path = require("path");
+const Monitor = require("./monitor");
 
 class MonitorGroup extends EventEmitter {
   constructor(dataDir) {
     super(...arguments);
     this.dataDir = dataDir;
-    this.configFile = path.join(dataDir, 'config.json');
+    this.configFile = path.join(dataDir, "config.json");
     this.processes = [];
     this.loadConfig();
   }
@@ -20,9 +19,12 @@ class MonitorGroup extends EventEmitter {
     try {
       data = fs.readFileSync(this.configFile);
     } catch (e) {
-      if (e.code === 'ENOENT' && !this.failedWritingConfigDirectory) {
+      if (e.code === "ENOENT" && !this.failedWritingConfigDirectory) {
         mkdir(this.dataDir);
-        fs.writeFileSync(this.configFile, fs.readFileSync(__dirname + '/../config.json'));
+        fs.writeFileSync(
+          this.configFile,
+          fs.readFileSync(__dirname + "/../config.json")
+        );
         this.failedWritingConfigDirectory = true;
         return this.loadConfig();
       } else {
@@ -33,11 +35,11 @@ class MonitorGroup extends EventEmitter {
     try {
       conf = JSON.parse(data.toString());
     } catch (e) {
-      this.emit('error', e);
+      this.emit("error", e);
     }
 
-    conf.logs = path.resolve(path.join(this.dataDir, conf.logs || 'logs'));
-    conf.pids = path.resolve(path.join(this.dataDir, conf.pids || 'pids'));
+    conf.logs = path.resolve(path.join(this.dataDir, conf.logs || "logs"));
+    conf.pids = path.resolve(path.join(this.dataDir, conf.pids || "pids"));
 
     mkdir(conf.logs);
     mkdir(conf.pids);
@@ -45,27 +47,29 @@ class MonitorGroup extends EventEmitter {
     let newProcesses = [];
     let oldProcesses = this.processes;
 
-    for(var processName in conf.processes) {
+    for (var processName in conf.processes) {
       let command = conf.processes[processName];
       let existingProcess = this.find(processName);
 
-      if(existingProcess) {
+      if (existingProcess) {
         newProcesses.push(existingProcess);
         delete oldProcesses[this.processes.indexOf(existingProcess)];
 
         existingProcess.command = command;
       } else {
-        newProcesses.push(new Monitor({
-          name: processName,
-          command: command,
-          conf: conf
-        }));
+        newProcesses.push(
+          new Monitor({
+            name: processName,
+            command: command,
+            conf: conf
+          })
+        );
       }
     }
 
     // these are old processes no longer in the config, terminate them before we
     // dereference them
-    oldProcesses.forEach((process) => process && process.stop());
+    oldProcesses.forEach(process => process && process.stop());
 
     this.processes = newProcesses;
 
@@ -84,25 +88,19 @@ class MonitorGroup extends EventEmitter {
   }
 
   find(name) {
-    return this.processes.find((p) => p && p.name == name);
+    return this.processes.find(p => p && p.name == name);
   }
 
   stopAll() {
-    return RSVP.all(this.processes.map((proc) => {
-      return proc.stop();
-    }));
+    return Promise.all(this.processes.map(proc => proc.stop()));
   }
 
   startAll() {
-    return RSVP.all(this.processes.map((proc) => {
-      return proc.start();
-    }));
+    return Promise.all(this.processes.map(proc => proc.start()));
   }
 
   restartAll() {
-    return RSVP.all(this.processes.map((proc) => {
-      return proc.restart();
-    }));
+    return Promise.all(this.processes.map(proc => proc.restart()));
   }
 }
 
