@@ -7,7 +7,7 @@ export default Route.extend({
 
   actions: {
     createProcess(name, command) {
-      get(this, "processes").request('create', [name, command], () => {
+      this.processes.request('create', [name, command], () => {
         this.transitionTo('process', name);
       });
     }

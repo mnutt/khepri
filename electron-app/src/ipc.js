@@ -68,7 +68,7 @@ exports.setupHandlers = monitorGroup => {
   });
 
   function getProcessStatus(procName) {
-    return monitorGroup.find(p => p.name === procName).getStatus();
+    return monitorGroup.find(procName).getStatus();
   }
 
   function getProcessesStatus() {

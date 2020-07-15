@@ -6,7 +6,7 @@ export default Route.extend({
   processes: service(),
 
   model(params) {
-    return get(this, 'processes').find(params.name).then((process) => {
+    return this.processes.find(params.name).then((process) => {
       process.fillHistorical();
       return process;
     });
@@ -19,7 +19,7 @@ export default Route.extend({
     },
 
     fireCommandToProcess(cmd) {
-      get(this, 'processes').sendCommand(this.currentModel.name, cmd);
+      this.processes.sendCommand(this.currentModel.name, cmd);
     }
   }
 });

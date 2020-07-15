@@ -33,7 +33,7 @@ export default Component.extend({
     this._super(...arguments);
 
     throttle(this, function() {
-      if(!get(this, 'follow')) { return; }
+      if(!this.follow) { return; }
       if(this.element) { this.element.scrollTop = 10e8; }
     }, 20, false);
   }

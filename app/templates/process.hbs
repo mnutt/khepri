@@ -12,11 +12,11 @@
   </div>
 </header>
 
-{{log-tail follow=follow data=model.data}}
+<LogTail @follow={{follow}} @data={{model.data}} />
 
 <footer>
   <label>
     <span>&gt;&gt;</span>
-    {{input value=model.command enter=(action "fireCommand")}}
+    <Input @value={{model.command}} @enter={{action "fireCommand"}} />
   </label>
 </footer>

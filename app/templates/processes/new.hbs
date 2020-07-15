@@ -8,7 +8,7 @@
 
   <div class="form-group">
     <label>Command</label>
-    {{input type="text" class="form-control" placeholder="cd ~/foo && ./bar" value=command}}
+    <Input @type="text" class="form-control" placeholder="cd ~/foo && ./bar" @value={{command}} />
 
     <div class="tip">
       Tips: Processes should run in the foreground and not daemonize. If the process exits for any reason it will be restarted. It will have access to your regular shell environment.

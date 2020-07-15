@@ -9,27 +9,27 @@ export default Component.extend({
 
   actions: {
     stop(name) {
-      get(this, 'processes').stop(name, 'SIGTERM');
+      this.processes.stop(name, 'SIGTERM');
     },
 
     stopAll() {
-      get(this, 'processes').stopAll();
+      this.processes.stopAll();
     },
 
     start(name) {
-      get(this, 'processes').start(name);
+      this.processes.start(name);
     },
 
     startAll() {
-      get(this, 'processes').startAll();
+      this.processes.startAll();
     },
 
     restart(name) {
-      get(this, 'processes').restart(name);
+      this.processes.restart(name);
     },
 
     restartAll() {
-      get(this, 'processes').restartAll();
+      this.processes.restartAll();
     }
   }
 });

@@ -1,9 +1,6 @@
-/* global requireNode */
-
 import { A } from "@ember/array";
 
 import Service from "@ember/service";
-import { set, get } from "@ember/object";
 import { run } from "@ember/runloop";
 import RSVP from "rsvp";
 import Process from "khepri/models/process";
@@ -17,18 +14,18 @@ export default Service.extend({
   init() {
     this._super(...arguments);
 
-    set(this, "itemMap", {});
-    set(this, "list", A());
+    this.set("itemMap", {});
+    this.set("list", A());
     this.updateLoop();
   },
 
   find(name) {
-    let item = get(this, `itemMap.${name}`);
+    let item = this.itemMap[name];
     if (item) {
       return RSVP.cast(item);
     } else {
       return this.update().then(() => {
-        return get(this, `itemMap.${name}`);
+        return this.itemMap[name];
       });
     }
   },
@@ -56,7 +53,7 @@ export default Service.extend({
   },
 
   stopAll() {
-    get(this, "list").forEach(process => {
+    this.list.forEach(process => {
       this.stop(process.name, "SIGTERM");
     });
   },
@@ -68,7 +65,7 @@ export default Service.extend({
   },
 
   startAll() {
-    get(this, "list").forEach(process => {
+    this.list.forEach(process => {
       this.start(process.name);
     });
   },
@@ -80,7 +77,7 @@ export default Service.extend({
   },
 
   restartAll() {
-    get(this, "list").forEach(process => {
+    this.list.forEach(process => {
       this.restart(process.name);
     });
   },
@@ -104,14 +101,14 @@ export default Service.extend({
 
     let allRecordsExisted = true;
     const newRecords = data.map(record => {
-      if (!get(this, `itemMap.${record.name}`)) {
+      if (!this.itemMap[record.name]) {
         allRecordsExisted = false;
       }
       return this.createOrUpdate(record);
     });
 
-    if (get(this, "list.length") !== data.length || !allRecordsExisted) {
-      set(this, "list", newRecords);
+    if (this.list.length !== data.length || !allRecordsExisted) {
+      this.set("list", newRecords);
     }
 
     return newRecords;
@@ -120,13 +117,13 @@ export default Service.extend({
   createOrUpdate(attrs) {
     let newProcess;
     let key = attrs.name;
-    let prior = get(this, `itemMap.${key}`);
+    let prior = this.itemMap[key];
     if (prior) {
       prior.setProperties(attrs);
       newProcess = prior;
     } else {
       newProcess = Process.create(attrs);
-      set(this, `itemMap.${key}`, newProcess);
+      this.set(`itemMap.${key}`, newProcess);
     }
     return newProcess;
   }

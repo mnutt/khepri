@@ -1,21 +1,20 @@
-import Controller from '@ember/controller';
-import { set, get } from '@ember/object';
+import Controller from "@ember/controller";
 
 export default Controller.extend({
   follow: true,
 
   actions: {
     clear() {
-      set(this, 'model.data', []);
+      this.set("model.data", []);
     },
 
     toggleFollow() {
-      this.toggleProperty('follow');
+      this.toggleProperty("follow");
     },
 
     fireCommand() {
-      this.send('fireCommandToProcess', get(this, 'model.command'));
-      set(this, 'model.command', null);
+      this.send("fireCommandToProcess", this.model.command);
+      this.set("model.command", null);
     }
   }
 });

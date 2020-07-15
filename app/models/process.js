@@ -1,8 +1,5 @@
-/* global requireNode */
-
 import { equal } from "@ember/object/computed";
-
-import EmberObject, { set, get } from "@ember/object";
+import EmberObject from "@ember/object";
 import { run } from "@ember/runloop";
 
 const { ipcRenderer } = requireNode("electron");
@@ -31,18 +28,18 @@ export default EmberObject.extend({
 
   init() {
     this._super(...arguments);
-    set(this, "data", []);
-    set(this, "newData", []);
+    this.set("data", []);
+    this.set("newData", []);
   },
 
   fillHistorical() {
     this.tearDownTail();
 
-    set(this, "data", []);
+    this.set("data", []);
 
-    let path = get(this, "log");
-    let history = get(this, "history");
-    let newData = get(this, "newData");
+    let path = this.log;
+    let history = this.history;
+    let newData = this.newData;
 
     this.tail = endOfFile(path, history, (err, stdout) => {
       newData.push(stdout);
@@ -61,9 +58,9 @@ export default EmberObject.extend({
   },
 
   formatNewData() {
-    let newData = this.format(get(this, "newData").join(""));
-    get(this, "data").pushObject(newData);
-    get(this, "newData").clear();
+    let newData = this.format(this.newData.join(""));
+    this.data.pushObject(newData);
+    this.newData.clear();
   },
 
   format(lines) {
