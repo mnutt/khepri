@@ -1,7 +1,7 @@
 module.exports = {
   packagerConfig: {
     name: "Khepri",
-    version: "2.0.0",
+    version: "2.0.1",
     appBundleId: "im.nutt.khepri",
     appCategoryType: "public.app-category.developer-tools",
     icon: "./public/assets/images/icons/Khepri.icns",

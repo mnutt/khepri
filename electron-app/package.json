@@ -1,7 +1,7 @@
 {
   "name": "khepri",
   "productName": "khepri",
-  "version": "0.5.1",
+  "version": "2.0.1",
   "description": "Process manager gui",
   "main": "src/index.js",
   "scripts": {
