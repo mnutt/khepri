@@ -32,6 +32,15 @@
   height: 28px;
 }
 
+.nav-group-item:focus {
+  background-color: hsl(200, 70%, 80%);
+  outline: none;
+}
+
+.nav-group-item.active {
+  background-color: #dcdfe1;
+}
+
 .nav-group-item .name {
   flex: 1;
   white-space: nowrap;
@@ -47,8 +56,13 @@
   cursor: pointer;
 }
 
-.nav-group-item .actions span:active {
+.nav-group-item .actions button:active {
   color: #fff !important;
+}
+
+.nav-group-item .actions button:focus {
+  color: hsl(200, 80%, 60%);
+  outline: none;
 }
 
 .meta-actions {
@@ -203,6 +217,13 @@ form .form-group {
 
 form .btn-primary {
   margin-top: 2em;
+}
+
+.blank-button {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
 }
 
 .terminal {

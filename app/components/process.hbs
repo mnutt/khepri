@@ -2,13 +2,13 @@
   <h1>{{@model.name}}</h1>
 
   <div class="actions">
-    <div class="action" {{on "click" this.clear}}>
+    <button type="button" class="blank-button action" {{on "click" this.clear}}>
       <span class="icon icon-erase"></span> Clear
-    </div>
+    </button>
 
-    <div class="action" {{on "click" this.toggleFollow}}>
+    <button type="button" class="blank-button action" {{on "click" this.toggleFollow}}>
       <span class="icon icon-cd {{if this.follow "active"}}"></span> Follow
-    </div>
+    </button>
   </div>
 </header>
 

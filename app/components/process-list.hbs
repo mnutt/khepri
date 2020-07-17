@@ -8,11 +8,11 @@
         <span class="name">{{process.name}}</span>
 
         <span class="actions">
-          <span {{on "click" (fn this.restart process.name)}} title="Restart" class="icon icon-cw"></span>
+          <button type="button" class="blank-button" {{on "click" (fn this.restart process.name)}} title="Restart" class="icon icon-cw"></button>
           {{#if process.stopped}}
-            <span {{on "click" (fn this.start process.name)}} title="Start" class="icon icon-play"></span>
+            <button type="button" class="blank-button" {{on "click" (fn this.start process.name)}} title="Start" class="icon icon-play"></button>
           {{else}}
-            <span {{on "click" (fn this.stop process.name)}} title="Stop" class="icon icon-stop"></span>
+            <button type="button" class="blank-button" {{on "click" (fn this.stop process.name)}} title="Stop" class="icon icon-stop"></button>
           {{/if}}
         </span>
       {{/link-to}}
@@ -22,13 +22,13 @@
   </nav>
 
   <div class="meta-actions">
-    <button class="btn btn-default" {{on "click" this.startAll}}>
+    <button type="button" class="btn btn-default" {{on "click" this.startAll}}>
       Start All
     </button>
-    <button class="btn btn-default" {{on "click" this.stopAll}}>
+    <button type="button" class="btn btn-default" {{on "click" this.stopAll}}>
       Stop All
     </button>
-    <button class="btn btn-default" {{on "click" this.restartAll}}>
+    <button type="button" class="btn btn-default" {{on "click" this.restartAll}}>
       Restart All
     </button>
   </div>
