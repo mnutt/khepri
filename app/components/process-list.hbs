@@ -1,0 +1,35 @@
+<div class="pane pane-sm sidebar process-list">
+  <h5 class="nav-group-title">Processes</h5>
+
+  <nav class="nav-group">
+    {{#each this.processes.list as |process|}}
+      <LinkTo @route="process" @model={{process.name}} class="nav-group-item">
+        <span class="icon icon-db-shape {{process.state}}"></span>
+        <span class="name">{{process.name}}</span>
+
+        <span class="actions">
+          <button type="button" {{on "click" (fn this.restart process.name)}} title="Restart" class="blank-button icon icon-cw"></button>
+          {{#if process.stopped}}
+            <button type="button" {{on "click" (fn this.start process.name)}} title="Start" class="blank-button icon icon-play"></button>
+          {{else}}
+            <button type="button" {{on "click" (fn this.stop process.name)}} title="Stop" class="blank-button icon icon-stop"></button>
+          {{/if}}
+        </span>
+      </LinkTo>
+    {{/each}}
+
+    <LinkTo @route="processes.new" class="nav-group-item">+ Add process</LinkTo>
+  </nav>
+
+  <div class="meta-actions">
+    <button type="button" class="btn btn-default" {{on "click" this.startAll}}>
+      Start All
+    </button>
+    <button type="button" class="btn btn-default" {{on "click" this.stopAll}}>
+      Stop All
+    </button>
+    <button type="button" class="btn btn-default" {{on "click" this.restartAll}}>
+      Restart All
+    </button>
+  </div>
+</div>
