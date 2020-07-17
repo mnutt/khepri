@@ -11,60 +11,59 @@ exports.setupHandlers = monitorGroup => {
     app.quit();
   });
 
-  ipcMain.handle("get-all", function getAll() {
+  ipcMain.handle("getAll", function getAll() {
     return getProcessesStatus();
   });
 
-  ipcMain.handle("get-one", function getOne(_, arg) {
-    return getProcessStatus(arg.name);
-  });
-
-  ipcMain.handle("tail-pid", function setTailPid(_, arg) {
-    exports.tailPid = arg;
-  });
-
-  ipcMain.handle("task", function task(_, arg) {
-    switch (arg.task) {
-      case "startAll":
-        return startAll().then(updateAll);
-      case "stopAll":
-        return stopAll().then(updateAll);
-      case "restartAll":
-        return restartAll().then(updateAll);
-      case "start":
-        return start(arg.name).then(updateSingle);
-      case "stop":
-        return stop(arg.name).then(updateSingle);
-      case "restart":
-        return restart(arg.name).then(updateSingle);
-      case "sendCommand":
-        return sendCommand(arg.name, arg.command).then(updateSingle);
-      default:
-        console.log("Unknown command", arg);
-    }
-
-    function updateAll() {
-      return getProcessesStatus();
-    }
-
-    function updateSingle() {
-      return getProcessStatus(arg.name);
-    }
-  });
-
-  ipcMain.handle("create", function createProcess(_, arg) {
-    const [name, command] = arg;
-    monitorGroup.createProcess(name, command);
+  ipcMain.handle("getOne", function getOne(_, { name }) {
     return getProcessStatus(name);
   });
 
-  ipcMain.handle("open-dir", function openDir() {
-    shell.showItemInFolder(path.join(monitorGroup.dir, "config.json"));
+  ipcMain.handle("tailPid", function setTailPid(_, arg) {
+    exports.tailPid = arg;
   });
 
-  ipcMain.handle("open-logs-dir", function openLogsDir(_, arg) {
-    const proc = monitorGroup.find(arg.name);
-    shell.showItemInFolder(proc.logfile);
+  ipcMain.handle("start", async function start(_, { name }) {
+    await monitorGroup.find(name).start();
+    return getProcessStatus(name);
+  });
+
+  ipcMain.handle("stop", async function stop(_, { name }) {
+    await monitorGroup.find(name).stop();
+    return getProcessStatus(name);
+  });
+
+  ipcMain.handle("restart", async function restart(_, { name }) {
+    await monitorGroup.find(name).restart();
+    return getProcessStatus(name);
+  });
+
+  ipcMain.handle("startAll", async function startAll() {
+    await monitorGroup.startAll();
+    return getProcessesStatus();
+  });
+
+  ipcMain.handle("stopAll", async function stopAll() {
+    await monitorGroup.stopAll();
+    return getProcessesStatus();
+  });
+
+  ipcMain.handle("restartAll", async function restartAll() {
+    await monitorGroup.restartAll();
+    return getProcessesStatus();
+  });
+
+  ipcMain.handle("sendCommand", async function sendCommand(
+    _,
+    { name, command }
+  ) {
+    await monitorGroup.find(name).sendCommand(command);
+    return getProcessStatus(name);
+  });
+
+  ipcMain.handle("create", function createProcess(_, [name, command]) {
+    monitorGroup.createProcess(name, command);
+    return getProcessStatus(name);
   });
 
   function getProcessStatus(procName) {
@@ -76,33 +75,5 @@ exports.setupHandlers = monitorGroup => {
     monitorGroup.loadConfig();
 
     return monitorGroup.processes.map(p => p.getStatus());
-  }
-
-  function restart(name) {
-    return monitorGroup.find(name).restart();
-  }
-
-  function start(name) {
-    return monitorGroup.find(name).start();
-  }
-
-  function stop(name) {
-    return monitorGroup.find(name).stop();
-  }
-
-  function sendCommand(name, command) {
-    return monitorGroup.find(name).sendCommand(command);
-  }
-
-  function stopAll() {
-    return monitorGroup.stopAll();
-  }
-
-  function startAll() {
-    return monitorGroup.startAll();
-  }
-
-  function restartAll() {
-    return monitorGroup.restartAll();
   }
 };

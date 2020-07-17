@@ -1,27 +1,35 @@
-<h5 class="nav-group-title">Processes</h5>
+<div class="pane pane-sm sidebar process-list">
+  <h5 class="nav-group-title">Processes</h5>
 
-<nav class="nav-group">
-  {{#each processes.list as |process|}}
-    {{#link-to "process" process.name class="nav-group-item"}}
-      <span class="icon icon-db-shape {{process.state}}"></span>
-      <span class="name">{{process.name}}</span>
+  <nav class="nav-group">
+    {{#each processes.list as |process|}}
+      {{#link-to "process" process.name class="nav-group-item"}}
+        <span class="icon icon-db-shape {{process.state}}"></span>
+        <span class="name">{{process.name}}</span>
 
-      <span class="actions">
-        <span {{action "restart" process.name}} title="Restart" class="icon icon-cw"></span>
-        {{#if process.stopped}}
-          <span {{action "start" process.name}} title="Start" class="icon icon-play"></span>
-        {{else}}
-          <span {{action "stop" process.name}} title="Stop" class="icon icon-stop"></span>
-        {{/if}}
-      </span>
-    {{/link-to}}
-  {{/each}}
+        <span class="actions">
+          <span {{on "click" (fn this.restart process.name)}} title="Restart" class="icon icon-cw"></span>
+          {{#if process.stopped}}
+            <span {{on "click" (fn this.start process.name)}} title="Start" class="icon icon-play"></span>
+          {{else}}
+            <span {{on "click" (fn this.stop process.name)}} title="Stop" class="icon icon-stop"></span>
+          {{/if}}
+        </span>
+      {{/link-to}}
+    {{/each}}
 
-  {{#link-to "processes.new" class="nav-group-item"}}+ Add process{{/link-to}}
-</nav>
+    {{#link-to "processes.new" class="nav-group-item"}}+ Add process{{/link-to}}
+  </nav>
 
-<div class="meta-actions">
-  <button class="btn btn-default" {{action "startAll"}}>Start All</button>
-  <button class="btn btn-default" {{action "stopAll"}}>Stop All</button>
-  <button class="btn btn-default" {{action "restartAll"}}>Restart All</button>
+  <div class="meta-actions">
+    <button class="btn btn-default" {{on "click" this.startAll}}>
+      Start All
+    </button>
+    <button class="btn btn-default" {{on "click" this.stopAll}}>
+      Stop All
+    </button>
+    <button class="btn btn-default" {{on "click" this.restartAll}}>
+      Restart All
+    </button>
+  </div>
 </div>

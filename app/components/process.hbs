@@ -1,0 +1,24 @@
+<header>
+  <h1>{{@model.name}}</h1>
+
+  <div class="actions">
+    <div class="action" {{on "click" this.clear}}>
+      <span class="icon icon-erase"></span> Clear
+    </div>
+
+    <div class="action" {{on "click" this.toggleFollow}}>
+      <span class="icon icon-cd {{if follow "active"}}"></span> Follow
+    </div>
+  </div>
+</header>
+
+<div class="log-tail-container">
+  <LogTail @follow={{this.follow}} @terminal={{this.terminal}} @model={{@model}} />
+</div>
+
+<footer>
+  <label>
+    <span>&gt;&gt;</span>
+    <Input @value={{@model.command}} @enter={{this.fireCommand}} />
+  </label>
+</footer>

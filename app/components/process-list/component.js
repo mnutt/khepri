@@ -1,35 +1,31 @@
-import { inject as service } from '@ember/service';
-import Component from '@ember/component';
-import { get } from '@ember/object';
+import Component from "@glimmer/component";
+import { action } from "@ember/object";
+import { inject as service } from "@ember/service";
 
-export default Component.extend({
-  processes: service(),
+export default class ProcessListComponent extends Component {
+  @service processes;
 
-  classNames: ['pane', 'pane-sm', 'sidebar', 'process-list'],
-
-  actions: {
-    stop(name) {
-      this.processes.stop(name, 'SIGTERM');
-    },
-
-    stopAll() {
-      this.processes.stopAll();
-    },
-
-    start(name) {
-      this.processes.start(name);
-    },
-
-    startAll() {
-      this.processes.startAll();
-    },
-
-    restart(name) {
-      this.processes.restart(name);
-    },
-
-    restartAll() {
-      this.processes.restartAll();
-    }
+  @action stop(name) {
+    this.processes.stop(name, "SIGTERM");
   }
-});
+
+  @action stopAll() {
+    this.processes.stopAll();
+  }
+
+  @action start(name) {
+    this.processes.start(name);
+  }
+
+  @action startAll() {
+    this.processes.startAll();
+  }
+
+  @action restart(name) {
+    this.processes.restart(name);
+  }
+
+  @action restartAll() {
+    this.processes.restartAll();
+  }
+}

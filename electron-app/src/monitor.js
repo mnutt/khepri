@@ -55,7 +55,7 @@ class Monitor extends EventEmitter {
   }
 
   start() {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.state === "alive") {
         return resolve();
       }
@@ -64,15 +64,15 @@ class Monitor extends EventEmitter {
         name: "xterm-color",
         cols: 80,
         rows: 30,
-        cwd: process.env.HOME,
-        env: process.env
+        cwd: process.env.HOME
       });
 
       this.state = "alive";
       this.startTime = new Date();
 
       this.out = fs.createWriteStream(this.logfile, { flags: "a" });
-      this.out.write("=== monitor starting ===\n");
+      this.out.write("\n\n=== monitor starting ===\n");
+      this.out.write(`\n\nCommand: ${this.command}\n`);
 
       this.term.pipe(this.out);
       this.term.on("exit", this.processDied.bind(this));
@@ -82,7 +82,7 @@ class Monitor extends EventEmitter {
   }
 
   stop() {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.state !== "alive") {
         if (this.startTimer) {
           clearTimeout(this.startTimer);
@@ -91,7 +91,7 @@ class Monitor extends EventEmitter {
       }
 
       if (this.out) {
-        this.out.write("=== monitor stopping process ===\n");
+        this.out.write("\n=== monitor stopping process ===\n");
       }
 
       this.state = "stopping";
@@ -100,7 +100,7 @@ class Monitor extends EventEmitter {
         this.term.kill("SIGKILL");
       }, 30 * 1000);
 
-      this.term.on("exit", function(code, signal) {
+      this.term.on("exit", function() {
         clearTimeout(hardKill);
         resolve(true);
       });
@@ -118,7 +118,7 @@ class Monitor extends EventEmitter {
   }
 
   sendCommand(command) {
-    return new RSVP.Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.state !== "alive") {
         return resolve();
       }

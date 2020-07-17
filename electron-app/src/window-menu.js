@@ -14,6 +14,10 @@ module.exports = function(dataDir) {
         }
       },
       {
+        label: "Dev tools",
+        role: "toggledevtools"
+      },
+      {
         role: "reload"
       },
       {

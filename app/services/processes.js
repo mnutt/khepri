@@ -1,103 +1,86 @@
-import { A } from "@ember/array";
-
 import Service from "@ember/service";
+import { tracked } from "@glimmer/tracking";
 import { run } from "@ember/runloop";
-import RSVP from "rsvp";
 import Process from "khepri/models/process";
 
 const { ipcRenderer } = requireNode("electron");
 
-export default Service.extend({
-  list: null,
-  itemMap: null,
+export default class ProcessService extends Service {
+  @tracked list = [];
+  itemMap = {};
 
-  init() {
-    this._super(...arguments);
-
-    this.set("itemMap", {});
-    this.set("list", A());
+  constructor() {
+    super(...arguments);
     this.updateLoop();
-  },
+  }
 
-  find(name) {
+  async find(name) {
     let item = this.itemMap[name];
     if (item) {
-      return RSVP.cast(item);
+      return item;
     } else {
-      return this.update().then(() => {
-        return this.itemMap[name];
-      });
+      await this.updateAll();
+      return this.itemMap[name];
     }
-  },
+  }
 
-  updateLoop() {
-    this.update()
-      .then(() => {
-        run.later(() => {
-          this.updateLoop();
-        }, 1000);
-      })
-      .catch(err => {
-        const { log } = console;
-        log("Service update error", err);
-        run.later(() => {
-          this.updateLoop();
-        }, 5000);
-      });
-  },
+  async updateLoop() {
+    let updateTime = 1000;
 
-  stop(name, signal) {
-    return this.execTask({ task: "stop", name, signal }).then(data => {
-      return this.createOrUpdate(data);
-    });
-  },
+    try {
+      await this.updateAll();
+    } catch (err) {
+      const { log } = console;
+      log("Service update error", err);
+      updateTime = 5000;
+    } finally {
+      run.later(() => this.updateLoop(), updateTime);
+    }
+  }
 
-  stopAll() {
-    this.list.forEach(process => {
-      this.stop(process.name, "SIGTERM");
-    });
-  },
+  async stop(name, signal) {
+    const data = await this.request("stop", { name, signal });
+    return this.createOrUpdate(data);
+  }
 
-  start(name) {
-    return this.execTask({ task: "start", name }).then(data => {
-      return this.createOrUpdate(data);
-    });
-  },
+  async stopAll() {
+    const data = await this.request("stopAll");
+    this.updateAll(data);
+  }
 
-  startAll() {
-    this.list.forEach(process => {
-      this.start(process.name);
-    });
-  },
+  async start(name) {
+    const data = await this.request("start", { name });
+    return this.createOrUpdate(data);
+  }
 
-  restart(name) {
-    return this.execTask({ task: "restart", name }).then(data => {
-      return this.createOrUpdate(data);
-    });
-  },
+  async startAll() {
+    const data = await this.request("startAll");
+    this.updateAll(data);
+  }
 
-  restartAll() {
-    this.list.forEach(process => {
-      this.restart(process.name);
-    });
-  },
+  async restart(name) {
+    const data = await this.request("restart", { name });
+    return this.createOrUpdate(data);
+  }
 
-  sendCommand(name, command) {
-    return this.execTask({ task: "sendCommand", name, command }).then(data => {
-      return this.createOrUpdate(data);
-    });
-  },
+  async restartAll() {
+    const data = await this.request("restartAll");
+    return this.updateAll(data);
+  }
+
+  async sendCommand(name, command) {
+    const data = await this.request("sendCommand", { name, command });
+    return this.createOrUpdate(data);
+  }
 
   request(command, value) {
     return ipcRenderer.invoke(command, value);
-  },
+  }
 
-  execTask(task) {
-    return this.request("task", task);
-  },
-
-  async update() {
-    const data = await this.request("get-all");
+  async updateAll(data) {
+    if (!data) {
+      data = await this.request("getAll");
+    }
 
     let allRecordsExisted = true;
     const newRecords = data.map(record => {
@@ -108,11 +91,11 @@ export default Service.extend({
     });
 
     if (this.list.length !== data.length || !allRecordsExisted) {
-      this.set("list", newRecords);
+      this.list = newRecords;
     }
 
     return newRecords;
-  },
+  }
 
   createOrUpdate(attrs) {
     let newProcess;
@@ -122,9 +105,9 @@ export default Service.extend({
       prior.setProperties(attrs);
       newProcess = prior;
     } else {
-      newProcess = Process.create(attrs);
-      this.set(`itemMap.${key}`, newProcess);
+      newProcess = new Process(attrs);
+      this.itemMap[key] = newProcess;
     }
     return newProcess;
   }
-});
+}
