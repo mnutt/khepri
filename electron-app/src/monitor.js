@@ -2,8 +2,8 @@ const EventEmitter = require("events");
 const path = require("path");
 const fs = require("fs");
 const pty = require("node-pty");
-const RSVP = require("rsvp");
 const ms = require("ms");
+const chalk = require("chalk");
 
 class Monitor extends EventEmitter {
   constructor(args) {
@@ -71,8 +71,12 @@ class Monitor extends EventEmitter {
       this.startTime = new Date();
 
       this.out = fs.createWriteStream(this.logfile, { flags: "a" });
-      this.out.write("\n\n=== monitor starting ===\n");
-      this.out.write(`\n\nCommand: ${this.command}\n`);
+      this.out.write("\r\n");
+      this.out.write(
+        chalk.black.bgWhite("=== monitor starting process ===\r\n")
+      );
+      this.out.write(chalk.blue(`Command: ${this.command}\r\n`));
+      this.out.write("\r\n");
 
       this.term.pipe(this.out);
       this.term.on("exit", this.processDied.bind(this));
@@ -91,12 +95,16 @@ class Monitor extends EventEmitter {
       }
 
       if (this.out) {
-        this.out.write("\n=== monitor stopping process ===\n");
+        this.out.write("\r\n");
+        this.out.write(
+          chalk.black.bgWhite("=== monitor stopping process ===\r\n\r\n")
+        );
+        this.out.write("\r\n");
       }
 
       this.state = "stopping";
 
-      var hardKill = setTimeout(() => {
+      const hardKill = setTimeout(() => {
         this.term.kill("SIGKILL");
       }, 30 * 1000);
 
@@ -123,11 +131,11 @@ class Monitor extends EventEmitter {
         return resolve();
       }
 
-      return resolve(this.term.write(command + "\r"));
+      return resolve(this.term.write(command));
     });
   }
 
-  processDied(code, signal) {
+  processDied() {
     if (this.state !== "alive") {
       return;
     }
@@ -139,6 +147,12 @@ class Monitor extends EventEmitter {
     }
 
     this.attemptCount += 1;
+
+    this.out = fs.createWriteStream(this.logfile, { flags: "a" });
+    this.out.write("\r\n");
+    this.out.write(chalk.white.bgRed("=== process died unexpectedly ===\r\n"));
+    this.out.write("\r\n");
+    this.out.close();
 
     var timeSinceFirstAttempt = new Date() - this.firstAttemptTime;
 
