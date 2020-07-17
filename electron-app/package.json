@@ -17,6 +17,11 @@
   "config": {
     "forge": {
       "packagerConfig": {
+        "name": "Khepri",
+        "version": "2.0.0",
+        "app-bundle-id": "im.nutt.khepri",
+        "app-category-type": "public.app-category.developer-tools",
+        "icon": "./public/assets/images/icons/Khepri.icns",
         "ignore": [
           "/ember-test(/|$)",
           "/tests(/|$)"
