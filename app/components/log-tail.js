@@ -46,6 +46,10 @@ export default class LogTailComponent extends Component {
     this._buffer = "";
 
     this.tail = endOfFile(this.args.model.log, 500000, (err, stdout) => {
+      if (err) {
+        this.terminal.write("Failed to watch process log");
+      }
+
       if (this.buffering) {
         this._buffer += stdout;
       } else {
@@ -65,6 +69,12 @@ export default class LogTailComponent extends Component {
       this.terminal.write(this._buffer);
       this._buffer = null;
     }, 50);
+  }
+
+  @action tailNewProcess() {
+    if (this.tail && this.tail.exitCode && this.args.model.state === "alive") {
+      this.startTail();
+    }
   }
 
   sendCommand(data) {
