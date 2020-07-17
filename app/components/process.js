@@ -33,6 +33,8 @@ export default class ProcessComponent extends Component {
   constructor() {
     super(...arguments);
 
+    // This lives on the Process component so that we can more easily
+    // call terminal.clear()
     this.terminal = new Terminal({ theme });
   }
 
@@ -42,9 +44,5 @@ export default class ProcessComponent extends Component {
 
   @action toggleFollow() {
     this.follow = !this.follow;
-  }
-
-  @action fireCommand(command) {
-    this.send("fireCommandToProcess", command);
   }
 }

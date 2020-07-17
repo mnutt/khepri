@@ -20,6 +20,10 @@ exports.setupHandlers = monitorGroup => {
   });
 
   ipcMain.handle("tailPid", function setTailPid(_, arg) {
+    if (exports.tailPid) {
+      process.kill(exports.tailPid, "SIGTERM");
+    }
+
     exports.tailPid = arg;
   });
 

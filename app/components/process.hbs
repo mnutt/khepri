@@ -7,7 +7,7 @@
     </div>
 
     <div class="action" {{on "click" this.toggleFollow}}>
-      <span class="icon icon-cd {{if follow "active"}}"></span> Follow
+      <span class="icon icon-cd {{if this.follow "active"}}"></span> Follow
     </div>
   </div>
 </header>
@@ -15,10 +15,3 @@
 <div class="log-tail-container">
   <LogTail @follow={{this.follow}} @terminal={{this.terminal}} @model={{@model}} />
 </div>
-
-<footer>
-  <label>
-    <span>&gt;&gt;</span>
-    <Input @value={{@model.command}} @enter={{this.fireCommand}} />
-  </label>
-</footer>

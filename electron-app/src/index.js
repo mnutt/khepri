@@ -17,8 +17,7 @@ const monitorGroup = new MonitorGroup(dataDir);
 ipc.setupHandlers(monitorGroup);
 
 let mainWindow = null,
-  canQuit,
-  tailPid;
+  canQuit;
 
 app.setName("khepri");
 app.setPath(
@@ -38,7 +37,7 @@ app.on("will-quit", function(e) {
   }
 
   if (ipc.tailPid) {
-    process.kill(tailPid, "SIGTERM");
+    process.kill(ipc.tailPid, "SIGTERM");
   }
 
   monitorGroup.stopAll().then(() => {
