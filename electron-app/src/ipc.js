@@ -21,7 +21,11 @@ exports.setupHandlers = monitorGroup => {
 
   ipcMain.handle("tailPid", function setTailPid(_, arg) {
     if (exports.tailPid) {
-      process.kill(exports.tailPid, "SIGTERM");
+      try {
+        process.kill(exports.tailPid, "SIGTERM");
+      } catch (_) {
+        // ignore missing tailPid
+      }
     }
 
     exports.tailPid = arg;
