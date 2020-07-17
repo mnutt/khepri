@@ -12,15 +12,13 @@
   },
   "private": false,
   "scripts": {
-    "build": "ember build --environment=production",
+    "build": "ember build --environment=production --output-path=./electron-app/ember-dist",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
-    "start": "electron-forge start",
+    "start": "ember electron",
     "test": "npm-run-all lint:* test:*",
-    "test:ember": "ember test",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "test:ember": "ember test"
   },
   "engines": {
     "node": "10.* || >= 12"
