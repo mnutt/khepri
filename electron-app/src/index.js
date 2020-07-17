@@ -3,6 +3,7 @@ const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const handleFileUrls = require("./handle-file-urls");
 const MonitorGroup = require("./monitor-group");
+const isDev = require("electron-is-dev");
 
 const emberAppDir = path.resolve(__dirname, "..", "ember-dist");
 const emberAppURL = pathToFileURL(
@@ -67,7 +68,9 @@ app.on("ready", async () => {
     }
   });
 
-  mainWindow.webContents.openDevTools();
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
 
   // If you want to open up dev tools programmatically, call
   // mainWindow.openDevTools();
