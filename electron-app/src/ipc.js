@@ -65,7 +65,7 @@ exports.setupHandlers = monitorGroup => {
     return getProcessStatus(name);
   });
 
-  ipcMain.handle("create", function createProcess(_, [name, command]) {
+  ipcMain.handle("create", function createProcess(_, { name, command }) {
     monitorGroup.createProcess(name, command);
     return getProcessStatus(name);
   });
