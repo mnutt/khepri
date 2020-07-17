@@ -1,8 +1,4 @@
-/* eslint-env node */
-
-const path = require("path");
-const debug = require("debug");
-const { app, ipcMain, shell } = require("electron");
+const { app, ipcMain } = require("electron");
 
 exports.tailPid = null;
 
@@ -79,7 +75,6 @@ exports.setupHandlers = monitorGroup => {
   }
 
   function getProcessesStatus() {
-    debug("reload config, get proc status...");
     monitorGroup.loadConfig();
 
     return monitorGroup.processes.map(p => p.getStatus());
