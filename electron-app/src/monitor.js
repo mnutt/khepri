@@ -3,6 +3,9 @@ const path = require("path");
 const fs = require("fs");
 const pty = require("node-pty");
 const ms = require("ms");
+
+// Chalk won't colorize unless we force it to
+process.env.FORCE_COLOR = 2;
 const chalk = require("chalk");
 
 class Monitor extends EventEmitter {
@@ -64,7 +67,10 @@ class Monitor extends EventEmitter {
         name: "xterm-color",
         cols: 80,
         rows: 30,
-        cwd: process.env.HOME
+        cwd: process.env.HOME,
+        env: {
+          TERM: "xterm-256color"
+        }
       });
 
       this.state = "alive";
