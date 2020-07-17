@@ -2,23 +2,23 @@
   <h5 class="nav-group-title">Processes</h5>
 
   <nav class="nav-group">
-    {{#each processes.list as |process|}}
-      {{#link-to "process" process.name class="nav-group-item"}}
+    {{#each this.processes.list as |process|}}
+      <LinkTo @route="process" @model={{process.name}} class="nav-group-item">
         <span class="icon icon-db-shape {{process.state}}"></span>
         <span class="name">{{process.name}}</span>
 
         <span class="actions">
-          <button type="button" class="blank-button" {{on "click" (fn this.restart process.name)}} title="Restart" class="icon icon-cw"></button>
+          <button type="button" {{on "click" (fn this.restart process.name)}} title="Restart" class="blank-button icon icon-cw"></button>
           {{#if process.stopped}}
-            <button type="button" class="blank-button" {{on "click" (fn this.start process.name)}} title="Start" class="icon icon-play"></button>
+            <button type="button" {{on "click" (fn this.start process.name)}} title="Start" class="blank-button icon icon-play"></button>
           {{else}}
-            <button type="button" class="blank-button" {{on "click" (fn this.stop process.name)}} title="Stop" class="icon icon-stop"></button>
+            <button type="button" {{on "click" (fn this.stop process.name)}} title="Stop" class="blank-button icon icon-stop"></button>
           {{/if}}
         </span>
-      {{/link-to}}
+      </LinkTo>
     {{/each}}
 
-    {{#link-to "processes.new" class="nav-group-item"}}+ Add process{{/link-to}}
+    <LinkTo @route="processes.new" class="nav-group-item">+ Add process</LinkTo>
   </nav>
 
   <div class="meta-actions">
