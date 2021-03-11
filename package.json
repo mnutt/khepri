@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@electron-forge/cli": "6.0.0-beta.51",
-    "ansi_up": "^3.0.0",
+    "ansi_up": "^5.0.0",
     "daemon": "^1.1.0",
     "debug": "^4.1.1",
     "rsvp": "^4.8.5",
